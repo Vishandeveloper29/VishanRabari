@@ -1,0 +1,778 @@
+/* ═══════════════════════════════════════════════════════════
+   VISHAN RABARI — FULL RESPONSIVE PATCH
+   Covers: Nav · Hero · Skills Globe · Projects · Contact
+   Breakpoints: 360 · 480 · 600 · 768 · 900 · 1024 · 1280
+═══════════════════════════════════════════════════════════ */
+
+/* ── 0. GLOBAL OVERFLOW GUARD ─────────────────────────── */
+html,
+body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+/* ── 0b. GLOBAL SPACING SCALE ─────────────────────────── */
+:root {
+    --px: clamp(14px, 4.5vw, 72px);
+    --py: clamp(44px, 8vw, 110px);
+}
+
+/* ════════════════════════════════════════════════════════
+   1. NAVIGATION & MOBILE MENU
+════════════════════════════════════════════════════════ */
+
+/* Nav height & padding */
+header#nav {
+    padding: 0 var(--px);
+    height: 56px;
+}
+
+@media (min-width: 768px) {
+    header#nav {
+        height: 68px;
+    }
+}
+
+/* Scrolled state keeps pace with height */
+header#nav.scrolled {
+    height: 52px;
+}
+
+@media (min-width: 768px) {
+    header#nav.scrolled {
+        height: 60px;
+    }
+}
+
+/* Hide "Hire Me" button below 480px — too cramped */
+@media (max-width: 479px) {
+    .nav-hire {
+        display: none !important;
+    }
+}
+
+/* Compress nav-link gaps on mid-range desktops */
+@media (min-width: 1024px) and (max-width: 1280px) {
+    .nav-links {
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 9px;
+        letter-spacing: 1.5px;
+    }
+}
+
+/* Mobile menu: tighten vertical spacing */
+.mob-menu-inner {
+    padding: 72px var(--px) clamp(28px, 5vh, 52px);
+    gap: clamp(4px, 1.6vh, 18px);
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+/* Scale mobile links so they never overflow */
+.mob-link {
+    font-size: clamp(20px, 6.5vw, 52px);
+    line-height: 1.05;
+}
+
+/* Prevent long link text clipping */
+.mob-link:hover {
+    transform: translateX(6px);
+    /* slightly less on mobile */
+}
+
+/* ════════════════════════════════════════════════════════
+   2. HERO SECTION & CODE CARD
+════════════════════════════════════════════════════════ */
+
+/* Account for new nav height */
+.hero {
+    padding-top: 56px;
+}
+
+@media (min-width: 768px) {
+    .hero {
+        padding-top: 68px;
+    }
+}
+
+/* Hero inner layout */
+.hero-inner {
+    padding: clamp(22px, 4vw, 52px) var(--px) clamp(155px, 19vw, 220px);
+}
+
+/* Stack columns below 1024px */
+@media (max-width: 1023px) {
+    .hero-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: clamp(145px, 18vw, 210px);
+    }
+
+    .hero-right {
+        width: 100%;
+        max-width: 500px;
+        margin-top: clamp(28px, 4.5vw, 48px);
+        padding-left: 0;
+        animation: revealUp 0.9s 1s forwards;
+    }
+}
+
+/* Title scaling */
+.hero-title {
+    font-size: clamp(40px, 11.5vw, 140px);
+}
+
+@media (max-width: 479px) {
+    .hero-title {
+        font-size: clamp(36px, 12.5vw, 56px);
+        line-height: 0.9;
+    }
+}
+
+/* Sub text */
+.hero-sub {
+    font-size: clamp(13px, 1.8vw, 17px);
+    max-width: 100%;
+}
+
+@media (min-width: 1024px) {
+    .hero-sub {
+        max-width: 460px;
+    }
+}
+
+/* CTAs: stack on tiny screens */
+@media (max-width: 479px) {
+    .hero-ctas {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .btn-lime,
+    .btn-outline,
+    .btn-ghost {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+/* Typewriter — slightly smaller on mobile */
+@media (max-width: 479px) {
+    .hero-typewriter {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+    }
+}
+
+/* Floating badges — hide on < 600px */
+@media (max-width: 599px) {
+    .float-badge {
+        display: none !important;
+    }
+}
+
+/* Code card — full width & scaled text on mobile */
+.code-card {
+    width: 100%;
+    max-width: 460px;
+}
+
+@media (max-width: 479px) {
+    .code-card {
+        max-width: 100%;
+    }
+
+    .code-body {
+        font-size: 10px;
+        padding: 10px 8px;
+        line-height: 1.8;
+    }
+
+    .code-line {
+        gap: 6px;
+    }
+
+    .code-output {
+        font-size: 10px;
+        padding: 8px 12px;
+    }
+}
+
+@media (min-width: 480px) and (max-width: 599px) {
+    .code-body {
+        font-size: 10.5px;
+    }
+}
+
+/* Hero stats bar */
+.hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 600px) {
+    .hero-stats {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 599px) {
+    .stat-item:nth-child(2) {
+        border-right: none;
+    }
+
+    .stat-item:nth-child(3) {
+        border-top: 1px solid var(--border);
+    }
+
+    .stat-n {
+        font-size: clamp(20px, 6vw, 36px);
+    }
+
+    .stat-l {
+        font-size: 8px;
+    }
+}
+
+/* ════════════════════════════════════════════════════════
+   3. SKILLS GLOBE & SKILL CARDS
+════════════════════════════════════════════════════════ */
+
+/* Globe layout: side-by-side → stacked */
+.skills-3d-wrap {
+    grid-template-columns: 1fr;
+    gap: clamp(24px, 4vw, 60px);
+}
+
+@media (min-width: 900px) {
+    .skills-3d-wrap {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Globe canvas size */
+.globe-container {
+    max-width: min(520px, 90vw);
+}
+
+@media (max-width: 479px) {
+    .globe-container {
+        max-width: 280px;
+    }
+}
+
+@media (min-width: 480px) and (max-width: 899px) {
+    .globe-container {
+        max-width: 360px;
+    }
+}
+
+/* Skills legend: 2-col always */
+.skills-legend {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+    .skills-legend {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 479px) {
+    .legend-item {
+        font-size: 10px;
+        padding: 6px 8px;
+    }
+
+    .legend-dot {
+        width: 7px;
+        height: 7px;
+    }
+}
+
+/* Info panel min-height on mobile */
+.skill-info-active {
+    min-height: 160px;
+}
+
+@media (max-width: 479px) {
+    .skill-info-active {
+        padding: 16px;
+    }
+
+    .sip-name {
+        font-size: clamp(18px, 5vw, 28px);
+    }
+}
+
+/* Skill cards grid */
+.skills-grid {
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 480px) {
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 900px) {
+    .skills-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .skills-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 479px) {
+    .skill-card {
+        padding: 16px;
+    }
+
+    .skill-nm {
+        font-size: 17px;
+    }
+
+    .skill-ds {
+        font-size: 11px;
+    }
+}
+
+/* ════════════════════════════════════════════════════════
+   4. PROJECTS GRID & FILTERS
+════════════════════════════════════════════════════════ */
+
+/* Projects header: stack on mobile */
+.projects-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: clamp(14px, 2.5vw, 28px);
+}
+
+@media (min-width: 600px) {
+    .projects-header {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+}
+
+/* Filter pills: horizontal scroll row — no wrapping */
+.proj-filters {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 7px;
+    padding-bottom: 6px;
+    margin-bottom: clamp(14px, 2.5vw, 32px);
+}
+
+.proj-filters::-webkit-scrollbar {
+    display: none;
+}
+
+.pf-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 7px 12px;
+}
+
+/* Project grid */
+.proj-grid {
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+    .proj-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .proj-featured {
+        grid-column: span 2;
+    }
+}
+
+@media (min-width: 1100px) {
+    .proj-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .proj-featured {
+        grid-column: span 2;
+    }
+}
+
+/* Project card viz height */
+@media (max-width: 479px) {
+    .proj-vis {
+        height: 150px;
+    }
+
+    .proj-featured .proj-vis {
+        height: 170px;
+    }
+
+    .proj-name {
+        font-size: 17px;
+    }
+
+    .proj-desc {
+        font-size: 12px;
+    }
+
+    .proj-meta {
+        padding: 12px 14px;
+    }
+
+    .proj-footer {
+        padding: 8px 14px;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+}
+
+/* Overlay buttons — always visible on touch devices */
+@media (hover: none) {
+    .proj-overlay {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: none;
+    }
+
+    .ov-btn {
+        padding: 6px 10px;
+        font-size: 9px;
+    }
+}
+
+/* ════════════════════════════════════════════════════════
+   5. CONTACT FORM & LAYOUT
+════════════════════════════════════════════════════════ */
+
+/* Stack contact layout on < 1024px */
+@media (max-width: 1023px) {
+    .contact-wrap {
+        grid-template-columns: 1fr;
+        gap: clamp(28px, 5vw, 60px);
+    }
+}
+
+/* Headline scaling */
+.contact-headline {
+    font-size: clamp(36px, 9.5vw, 112px);
+}
+
+@media (max-width: 479px) {
+    .contact-headline {
+        font-size: clamp(32px, 11.5vw, 64px);
+    }
+}
+
+/* Contact items */
+@media (max-width: 479px) {
+    .ci {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .ci-value {
+        font-size: 12px;
+    }
+
+    .ci-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .ci-icon svg {
+        width: 13px;
+        height: 13px;
+    }
+}
+
+/* Form card */
+@media (max-width: 479px) {
+    .form-card {
+        padding: 18px 16px;
+        border-radius: 12px;
+    }
+
+    .form-title {
+        font-size: 18px;
+    }
+
+    .form-sub {
+        font-size: 11px;
+        margin-bottom: 18px;
+    }
+}
+
+/* Name row: 2-col → 1-col on very small screens */
+.form-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+@media (max-width: 479px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Inputs */
+@media (max-width: 479px) {
+
+    input.fi,
+    select.fi,
+    textarea.fi {
+        font-size: 14px;
+        /* prevents iOS zoom on focus */
+        padding: 11px 12px;
+    }
+
+    label.fl {
+        font-size: 9px;
+    }
+
+    textarea.fi {
+        min-height: 80px;
+    }
+}
+
+/* Submit button */
+@media (max-width: 479px) {
+    .btn-submit {
+        font-size: 11px;
+        padding: 14px;
+    }
+}
+
+/* Success state */
+@media (max-width: 479px) {
+    .form-success {
+        padding: 24px 14px;
+        min-height: 240px;
+    }
+
+    .success-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .success-title {
+        font-size: 32px;
+    }
+}
+
+/* ════════════════════════════════════════════════════════
+   6. BONUS: Other Sections — Consistent Responsive Fixes
+════════════════════════════════════════════════════════ */
+
+/* About */
+@media (max-width: 1023px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .id-card {
+        position: static;
+        max-width: 480px;
+    }
+}
+
+@media (max-width: 479px) {
+    .tech-pills {
+        gap: 6px;
+    }
+
+    .pill {
+        padding: 5px 10px;
+        font-size: 9px;
+    }
+
+    .fun-facts {
+        flex-direction: column;
+    }
+
+    .id-body {
+        padding: 44px 16px 18px;
+    }
+}
+
+/* Services */
+@media (max-width: 599px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .service-card {
+        padding: 20px 18px;
+    }
+}
+
+/* Process */
+@media (max-width: 599px) {
+    .process-steps {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 999px) {
+    .process-steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Timeline */
+@media (max-width: 767px) {
+    .timeline-item {
+        padding-left: 52px;
+        padding-right: 0;
+    }
+
+    .timeline-item:nth-child(even) {
+        padding-left: 52px;
+        padding-right: 0;
+    }
+
+    .timeline-line {
+        left: 14px;
+    }
+
+    .timeline-dot {
+        left: 0;
+        width: 34px;
+        height: 34px;
+    }
+
+    .timeline-card {
+        padding: 14px 16px;
+    }
+}
+
+/* Pricing */
+@media (max-width: 699px) {
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+        margin: 0 auto;
+    }
+}
+
+/* CTA Banner */
+@media (max-width: 899px) {
+    .cta-banner-inner {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 479px) {
+    .cta-banner-title {
+        font-size: clamp(28px, 9vw, 56px);
+    }
+
+    .cta-banner-btns {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cta-banner-btns .btn-lime,
+    .cta-banner-btns .btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Blog */
+@media (max-width: 599px) {
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 999px) {
+    .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* FAQ */
+@media (max-width: 899px) {
+    .faq-wrap {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Preview modal */
+@media (max-width: 599px) {
+    .preview-modal {
+        padding: 8px;
+    }
+
+    .preview-iframe {
+        min-height: 240px;
+    }
+
+    .preview-container {
+        border-radius: 12px;
+    }
+}
+
+/* Footer */
+@media (max-width: 599px) {
+    footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+}
+
+/* Utility buttons */
+@media (max-width: 479px) {
+    .theme-toggle {
+        bottom: 14px;
+        left: 14px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .back-top {
+        bottom: 14px;
+        right: 14px;
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* Marquee text size */
+@media (max-width: 479px) {
+    .m-item {
+        font-size: 9px;
+        padding: 0 8px;
+    }
+
+    .marquee-track {
+        padding: 10px 0;
+    }
+}
+
+/* Smoother scroll-reveal offset on mobile */
+@media (max-width: 600px) {
+    .sr {
+        transform: translateY(18px);
+    }
+}
