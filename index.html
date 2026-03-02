@@ -11,6 +11,7 @@
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="responsive.css">
 </head>
 
 <body>
@@ -460,7 +461,53 @@
             </div>
         </div>
     </section>
+    <!-- ══ SKILLS — 3D TECH GLOBE ══ -->
+    <section class="section" id="skills">
+        <div class="sec-eyebrow sr">What I Work With</div>
+        <h2 class="sec-title sr sr-delay-1">Skills &amp; Tools</h2>
 
+        <div class="skills-3d-wrap sr sr-delay-2">
+            <div class="globe-container">
+                <canvas id="skillsGlobe"></canvas>
+                <div class="globe-glow" aria-hidden="true"></div>
+            </div>
+
+            <div class="skills-info-panel">
+                <div class="skill-info-active" id="skillInfoPanel">
+                    <div class="sip-icon" id="sipIcon">👆</div>
+                    <div class="sip-name" id="sipName">Hover a Skill</div>
+                    <div class="sip-level" id="sipLevel">——</div>
+                    <p class="sip-desc" id="sipDesc">Drag to rotate the globe. Hover over any orbiting tech icon to see
+                        details about that skill.</p>
+                    <div class="sip-bar-wrap">
+                        <div class="sip-bar-track">
+                            <div class="sip-bar-fill" id="sipBarFill" style="width:0%"></div>
+                        </div>
+                        <span class="sip-pct" id="sipPct">—</span>
+                    </div>
+                </div>
+
+                <div class="skills-legend" id="skillsLegend">
+                    <div class="legend-item" data-skill="HTML5"><span class="legend-dot"
+                            style="background:#e34c26"></span>HTML5</div>
+                    <div class="legend-item" data-skill="CSS3"><span class="legend-dot"
+                            style="background:#264de4"></span>CSS3</div>
+                    <div class="legend-item" data-skill="JavaScript"><span class="legend-dot"
+                            style="background:#f0db4f"></span>JavaScript</div>
+                    <div class="legend-item" data-skill="Figma"><span class="legend-dot"
+                            style="background:#a259ff"></span>Figma</div>
+                    <div class="legend-item" data-skill="Git"><span class="legend-dot"
+                            style="background:#f1502f"></span>Git &amp; GitHub</div>
+                    <div class="legend-item" data-skill="Responsive"><span class="legend-dot"
+                            style="background:#00e5ff"></span>Responsive</div>
+                    <div class="legend-item" data-skill="REST APIs"><span class="legend-dot"
+                            style="background:#c8ff00"></span>REST APIs</div>
+                    <div class="legend-item" data-skill="C Lang"><span class="legend-dot"
+                            style="background:#a8b9cc"></span>C Language</div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- ══ PROJECTS ══ -->
     <section class="section" id="projects">
         <div class="projects-header sr">
