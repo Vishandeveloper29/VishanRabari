@@ -850,3 +850,481 @@ if (isTouch()) {
     );
   });
 }
+
+/* ══════════════════════════════════
+   23. SKILLS 3D GLOBE — Three.js
+══════════════════════════════════ */
+(function initSkillsGlobe() {
+  const canvas = document.getElementById("skillsGlobe");
+  if (!canvas) return;
+
+  // ── Data ──────────────────────────────────────
+  const SKILLS = [
+    {
+      name: "HTML5",
+      icon: "⬡",
+      color: "#e34c26",
+      pct: 90,
+      level: "Expert",
+      desc: "Semantic markup, accessibility, SEO and modern HTML5 structures.",
+    },
+    {
+      name: "CSS3",
+      icon: "◈",
+      color: "#264de4",
+      pct: 88,
+      level: "Expert",
+      desc: "Flexbox, Grid, animations, transitions and responsive design patterns.",
+    },
+    {
+      name: "JavaScript",
+      icon: "JS",
+      color: "#f0db4f",
+      pct: 72,
+      level: "Advanced",
+      desc: "DOM manipulation, REST APIs, ES6+, async/await and event-driven patterns.",
+    },
+    {
+      name: "Figma",
+      icon: "▣",
+      color: "#a259ff",
+      pct: 75,
+      level: "Advanced",
+      desc: "UI/UX design, prototyping, design systems and developer handoffs.",
+    },
+    {
+      name: "Git",
+      icon: "⑂",
+      color: "#f1502f",
+      pct: 80,
+      level: "Advanced",
+      desc: "Version control, branching workflows and GitHub Pages deployment.",
+    },
+    {
+      name: "Responsive",
+      icon: "⊞",
+      color: "#00e5ff",
+      pct: 85,
+      level: "Expert",
+      desc: "Mobile-first design, media queries and fluid layout systems.",
+    },
+    {
+      name: "REST APIs",
+      icon: "⇄",
+      color: "#c8ff00",
+      pct: 70,
+      level: "Advanced",
+      desc: "Integrating weather, currency exchange, and GitHub APIs in real projects.",
+    },
+    {
+      name: "C Lang",
+      icon: "C",
+      color: "#a8b9cc",
+      pct: 78,
+      level: "Advanced",
+      desc: "Algorithms, data structures, memory management and problem solving.",
+    },
+  ];
+
+  // ── Three.js via CDN ──────────────────────────
+  const script = document.createElement("script");
+  script.src =
+    "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+  script.onload = buildGlobe;
+  document.head.appendChild(script);
+
+  function buildGlobe() {
+    const W = canvas.parentElement.clientWidth;
+    const H = canvas.parentElement.clientHeight;
+
+    // ── Renderer ──
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(W, H);
+    renderer.setClearColor(0x000000, 0);
+
+    // ── Scene & Camera ──
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 1000);
+    camera.position.z = 3.8;
+
+    // ── Lighting ──
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+    const dirLight = new THREE.DirectionalLight(0xc8ff00, 0.8);
+    dirLight.position.set(5, 5, 5);
+    scene.add(dirLight);
+    const pointLight = new THREE.PointLight(0x00e5ff, 0.6, 10);
+    pointLight.position.set(-3, 2, 3);
+    scene.add(pointLight);
+
+    // ── Core Geodesic Sphere ──
+    const geoSphere = new THREE.IcosahedronGeometry(1.0, 2);
+    const matSphere = new THREE.MeshPhongMaterial({
+      color: 0x050510,
+      emissive: 0x0a0a20,
+      wireframe: false,
+      transparent: true,
+      opacity: 0.92,
+    });
+    const meshSphere = new THREE.Mesh(geoSphere, matSphere);
+    scene.add(meshSphere);
+
+    // Wireframe overlay
+    const wireGeo = new THREE.IcosahedronGeometry(1.01, 2);
+    const wireMat = new THREE.MeshBasicMaterial({
+      color: 0x1a3a1a,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.35,
+    });
+    scene.add(new THREE.Mesh(wireGeo, wireMat));
+
+    // ── Outer ring glow spheres ──
+    const ringRadii = [1.25, 1.55, 1.85];
+    const ringColors = [0xc8ff00, 0x00e5ff, 0x8b5cf6];
+    ringRadii.forEach((r, i) => {
+      const rGeo = new THREE.IcosahedronGeometry(r, 1);
+      const rMat = new THREE.MeshBasicMaterial({
+        color: ringColors[i],
+        wireframe: true,
+        transparent: true,
+        opacity: 0.06 - i * 0.015,
+      });
+      scene.add(new THREE.Mesh(rGeo, rMat));
+    });
+
+    // ── Orbital Ring lines ──
+    function makeRing(radius, tiltX, tiltZ, color, opacity) {
+      const points = [];
+      for (let i = 0; i <= 128; i++) {
+        const a = (i / 128) * Math.PI * 2;
+        points.push(
+          new THREE.Vector3(Math.cos(a) * radius, 0, Math.sin(a) * radius),
+        );
+      }
+      const geo = new THREE.BufferGeometry().setFromPoints(points);
+      const mat = new THREE.LineBasicMaterial({
+        color,
+        transparent: true,
+        opacity,
+      });
+      const ring = new THREE.LineLoop(geo, mat);
+      ring.rotation.x = tiltX;
+      ring.rotation.z = tiltZ;
+      scene.add(ring);
+      return ring;
+    }
+
+    const rings = [
+      makeRing(1.55, Math.PI / 2, 0, 0xc8ff00, 0.25),
+      makeRing(1.55, Math.PI / 4, Math.PI / 6, 0x00e5ff, 0.18),
+      makeRing(1.85, Math.PI / 3, -Math.PI / 5, 0x8b5cf6, 0.12),
+    ];
+
+    // ── Skill icon sprites orbiting ──
+    // Distribute points on a sphere surface using Fibonacci lattice
+    function fibonacciSphere(n, radius) {
+      const pts = [];
+      const golden = Math.PI * (3 - Math.sqrt(5));
+      for (let i = 0; i < n; i++) {
+        const y = 1 - (i / (n - 1)) * 2;
+        const r = Math.sqrt(1 - y * y);
+        const theta = golden * i;
+        pts.push(
+          new THREE.Vector3(
+            Math.cos(theta) * r * radius,
+            y * radius,
+            Math.sin(theta) * r * radius,
+          ),
+        );
+      }
+      return pts;
+    }
+
+    const orbitPositions = fibonacciSphere(SKILLS.length, 1.55);
+    const skillNodes = [];
+
+    // Create canvas textures for each skill label
+    SKILLS.forEach((skill, i) => {
+      // Texture canvas
+      const tc = document.createElement("canvas");
+      tc.width = 128;
+      tc.height = 128;
+      const ctx2 = tc.getContext("2d");
+
+      // Outer glow circle
+      const grad = ctx2.createRadialGradient(64, 64, 10, 64, 64, 62);
+      grad.addColorStop(0, skill.color + "dd");
+      grad.addColorStop(1, skill.color + "00");
+      ctx2.fillStyle = grad;
+      ctx2.beginPath();
+      ctx2.arc(64, 64, 62, 0, Math.PI * 2);
+      ctx2.fill();
+
+      // Icon circle
+      ctx2.fillStyle = "rgba(5,5,15,0.88)";
+      ctx2.beginPath();
+      ctx2.arc(64, 64, 36, 0, Math.PI * 2);
+      ctx2.fill();
+
+      ctx2.strokeStyle = skill.color;
+      ctx2.lineWidth = 2.5;
+      ctx2.beginPath();
+      ctx2.arc(64, 64, 36, 0, Math.PI * 2);
+      ctx2.stroke();
+
+      // Icon text
+      ctx2.fillStyle = skill.color;
+      ctx2.font = "bold 22px JetBrains Mono, monospace";
+      ctx2.textAlign = "center";
+      ctx2.textBaseline = "middle";
+      ctx2.fillText(skill.icon, 64, 60);
+
+      // Name text
+      ctx2.fillStyle = "rgba(240,240,245,0.85)";
+      ctx2.font = "11px Outfit, sans-serif";
+      ctx2.fillText(skill.name, 64, 84);
+
+      const texture = new THREE.CanvasTexture(tc);
+      const spriteMat = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+        depthTest: false,
+      });
+      const sprite = new THREE.Sprite(spriteMat);
+      const basePos = orbitPositions[i].clone();
+      sprite.position.copy(basePos);
+      sprite.scale.set(0.42, 0.42, 1);
+      sprite.userData = { skill, basePos, idx: i, hovered: false };
+      scene.add(sprite);
+      skillNodes.push(sprite);
+    });
+
+    // ── Floating particles ──
+    const particleCount = 120;
+    const pPositions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+      const r = 1.6 + Math.random() * 1.2;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      pPositions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      pPositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      pPositions[i * 3 + 2] = r * Math.cos(phi);
+    }
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute("position", new THREE.BufferAttribute(pPositions, 3));
+    const pMat = new THREE.PointsMaterial({
+      color: 0xc8ff00,
+      size: 0.015,
+      transparent: true,
+      opacity: 0.5,
+    });
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    // ── Raycaster for hover ──
+    const raycaster = new THREE.Raycaster();
+    const mouse2D = new THREE.Vector2(-999, -999);
+    let hoveredNode = null;
+
+    // ── Info panel updater ──
+    const panel = document.getElementById("skillInfoPanel");
+    const sipIcon = document.getElementById("sipIcon");
+    const sipName = document.getElementById("sipName");
+    const sipLevel = document.getElementById("sipLevel");
+    const sipDesc = document.getElementById("sipDesc");
+    const sipBarFill = document.getElementById("sipBarFill");
+    const sipPct = document.getElementById("sipPct");
+
+    function showSkillInfo(skill) {
+      if (!panel) return;
+      panel.classList.add("active");
+      sipIcon.textContent = skill.icon;
+      sipName.textContent = skill.name;
+      sipLevel.textContent = skill.level;
+      sipDesc.textContent = skill.desc;
+      sipBarFill.style.width = skill.pct + "%";
+      sipPct.textContent = skill.pct + "%";
+
+      // Highlight legend
+      document.querySelectorAll(".legend-item").forEach((el) => {
+        el.classList.toggle("active", el.dataset.skill === skill.name);
+      });
+    }
+
+    function resetSkillInfo() {
+      if (!panel) return;
+      panel.classList.remove("active");
+      sipIcon.textContent = "👆";
+      sipName.textContent = "Hover a Skill";
+      sipLevel.textContent = "——";
+      sipDesc.textContent =
+        "Drag to rotate the globe. Hover over any orbiting tech icon to see details about that skill.";
+      sipBarFill.style.width = "0%";
+      sipPct.textContent = "—";
+      document
+        .querySelectorAll(".legend-item")
+        .forEach((el) => el.classList.remove("active"));
+    }
+
+    // Legend click
+    document.querySelectorAll(".legend-item").forEach((el) => {
+      el.addEventListener("click", () => {
+        const skillName = el.dataset.skill;
+        const found = SKILLS.find((s) => s.name === skillName);
+        if (found) showSkillInfo(found);
+      });
+    });
+
+    // ── Mouse & drag ──
+    let isDragging = false;
+    let prevMouse = { x: 0, y: 0 };
+    let autoRotate = { x: 0, y: 0.003 };
+    let velocity = { x: 0, y: 0 };
+    const pivot = new THREE.Group();
+    scene.add(pivot);
+    // Move everything into pivot
+    [meshSphere, particles, ...skillNodes].forEach((o) => {
+      scene.remove(o);
+      pivot.add(o);
+    });
+    scene.children
+      .filter((c) => c !== pivot && c !== dirLight && c !== pointLight)
+      .forEach((c) => {
+        if (c.isLine || c.isLineLoop || c.isMesh) {
+          scene.remove(c);
+          pivot.add(c);
+        }
+      });
+
+    function getCanvasPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const cx = e.touches ? e.touches[0].clientX : e.clientX;
+      const cy = e.touches ? e.touches[0].clientY : e.clientY;
+      return { x: cx - rect.left, y: cy - rect.top };
+    }
+
+    canvas.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      const p = getCanvasPos(e);
+      prevMouse = p;
+      velocity = { x: 0, y: 0 };
+    });
+
+    canvas.addEventListener(
+      "touchstart",
+      (e) => {
+        isDragging = true;
+        const p = getCanvasPos(e);
+        prevMouse = p;
+      },
+      { passive: true },
+    );
+
+    window.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
+    window.addEventListener("touchend", () => {
+      isDragging = false;
+    });
+
+    canvas.addEventListener("mousemove", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse2D.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse2D.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      if (isDragging) {
+        const p = getCanvasPos(e);
+        const dx = p.x - prevMouse.x;
+        const dy = p.y - prevMouse.y;
+        velocity.x = dy * 0.004;
+        velocity.y = dx * 0.004;
+        pivot.rotation.x += velocity.x;
+        pivot.rotation.y += velocity.y;
+        prevMouse = p;
+      }
+    });
+
+    canvas.addEventListener(
+      "touchmove",
+      (e) => {
+        if (isDragging) {
+          const p = getCanvasPos(e);
+          const dx = p.x - prevMouse.x;
+          const dy = p.y - prevMouse.y;
+          pivot.rotation.x += dy * 0.004;
+          pivot.rotation.y += dx * 0.004;
+          prevMouse = p;
+        }
+      },
+      { passive: true },
+    );
+
+    // ── Resize ──
+    function resize() {
+      const w = canvas.parentElement.clientWidth;
+      const h = canvas.parentElement.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener("resize", resize, { passive: true });
+
+    // ── Animate ──
+    let frame = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      frame++;
+
+      // Auto-rotate with damping
+      if (!isDragging) {
+        velocity.x *= 0.95;
+        velocity.y *= 0.95;
+        pivot.rotation.x += velocity.x + autoRotate.x;
+        pivot.rotation.y += velocity.y + autoRotate.y;
+      }
+
+      // Pulse particles opacity
+      pMat.opacity = 0.3 + Math.sin(frame * 0.02) * 0.2;
+
+      // Ring slow spin
+      rings.forEach((r, i) => {
+        r.rotation.y += 0.001 * (i + 1) * 0.5;
+      });
+
+      // Hover detection
+      raycaster.setFromCamera(mouse2D, camera);
+      const hits = raycaster.intersectObjects(skillNodes);
+
+      if (hits.length > 0) {
+        const hit = hits[0].object;
+        if (hoveredNode !== hit) {
+          if (hoveredNode) {
+            hoveredNode.scale.set(0.42, 0.42, 1);
+            hoveredNode.userData.hovered = false;
+          }
+          hoveredNode = hit;
+          hoveredNode.scale.set(0.58, 0.58, 1);
+          hoveredNode.userData.hovered = true;
+          showSkillInfo(hoveredNode.userData.skill);
+          canvas.style.cursor = "pointer";
+        }
+      } else {
+        if (hoveredNode) {
+          hoveredNode.scale.set(0.42, 0.42, 1);
+          hoveredNode.userData.hovered = false;
+          hoveredNode = null;
+          resetSkillInfo();
+        }
+        canvas.style.cursor = isDragging ? "grabbing" : "grab";
+      }
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  }
+})();
