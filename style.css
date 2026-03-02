@@ -3220,6 +3220,7 @@ nav.mob-menu.open {
   flex-wrap: wrap
 }
 
+
 /* ── TESTIMONIALS CAROUSEL ──────────────────────── */
 .testimonials-section {
   padding: var(--py) var(--px)
@@ -4173,4 +4174,200 @@ footer {
     opacity: 1;
     transform: none
   }
+}
+
+/* ── SKILLS 3D GLOBE ─────────────────────────── */
+.skills-3d-wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(32px, 5vw, 60px);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .skills-3d-wrap {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.globe-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#skillsGlobe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+
+#skillsGlobe:active {
+  cursor: grabbing;
+}
+
+.globe-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%,
+      rgba(200, 255, 0, 0.06) 0%,
+      rgba(0, 229, 255, 0.04) 40%,
+      transparent 70%);
+  pointer-events: none;
+  filter: blur(30px);
+  animation: globePulse 4s ease-in-out infinite;
+}
+
+@keyframes globePulse {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+/* ── Skill Info Panel ── */
+.skills-info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.skill-info-active {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: clamp(22px, 3vw, 36px);
+  position: relative;
+  overflow: hidden;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.3s;
+}
+
+.skill-info-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--lime), var(--cyan));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s;
+}
+
+.skill-info-active.active::before {
+  transform: scaleX(1);
+}
+
+.skill-info-active.active {
+  border-color: rgba(200, 255, 0, 0.25);
+}
+
+.sip-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.sip-name {
+  font-family: var(--ff-d);
+  font-size: clamp(22px, 3vw, 32px);
+  letter-spacing: 2px;
+  color: var(--fg);
+}
+
+.sip-level {
+  font-family: var(--ff-m);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+
+.sip-desc {
+  font-size: clamp(13px, 1.5vw, 14px);
+  line-height: 1.8;
+  color: var(--fg2);
+  font-weight: 300;
+  flex: 1;
+}
+
+.sip-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sip-bar-track {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.sip-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--lime), var(--cyan));
+  border-radius: 2px;
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sip-pct {
+  font-family: var(--ff-m);
+  font-size: 11px;
+  color: var(--lime);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── Skills Legend ── */
+.skills-legend {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ff-m);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--fg3);
+  padding: 8px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.legend-item:hover,
+.legend-item.active {
+  border-color: rgba(200, 255, 0, 0.3);
+  color: var(--fg);
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
