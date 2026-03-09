@@ -894,38 +894,32 @@ nav.mob-menu.open {
   -webkit-text-stroke: 0
 }
 
-/* Glitch hover on title lines */
-.ht-line:hover {
-  animation: lineGlitch .4s
+/* Hero title hover — smooth shimmer + lift */
+.ht-line {
+  transition: transform .4s cubic-bezier(.34, 1.56, .64, 1),
+    letter-spacing .4s cubic-bezier(.34, 1.56, .64, 1),
+    color .3s ease,
+    -webkit-text-stroke .3s ease;
+  cursor: default;
 }
 
-@keyframes lineGlitch {
+.ht-line:hover {
+  animation: none;
+  transform: translateY(-6px) scale(1.02);
+  letter-spacing: 6px;
+  color: var(--lime);
+  -webkit-text-stroke: 0;
+  filter: drop-shadow(0 0 24px rgba(200, 255, 0, 0.55)) drop-shadow(0 0 60px rgba(200, 255, 0, 0.2));
+}
 
-  0%,
-  100% {
-    text-shadow: none;
-    transform: none
-  }
+.stroke-text:hover {
+  color: var(--lime);
+  -webkit-text-stroke: 0;
+}
 
-  20% {
-    text-shadow: 3px 0 var(--rose);
-    transform: skewX(-3deg)
-  }
-
-  40% {
-    text-shadow: -3px 0 var(--cyan);
-    transform: skewX(3deg)
-  }
-
-  60% {
-    text-shadow: 3px 0 var(--cyan);
-    transform: translateX(-2px)
-  }
-
-  80% {
-    text-shadow: none;
-    transform: translateX(2px)
-  }
+.ht-line.lime:hover {
+  color: #fff;
+  filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.4));
 }
 
 .hero-sub {
@@ -4370,4 +4364,336 @@ footer {
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════
+   STAR CATCHER GAME CARD
+═══════════════════════════════════════════════ */
+
+/* Card visual area override */
+.sc-vis-wrap {
+  height: clamp(220px, 28vw, 280px) !important;
+  overflow: hidden;
+  position: relative;
+  cursor: default;
+}
+
+/* Deep space background */
+.sc-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, #02020e, #05051a, #080828);
+  z-index: 0;
+}
+
+.sc-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 28% 62%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 48% 12%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 78%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 42%, rgba(255, 255, 255, 0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 18% 88%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 58% 52%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 82% 18%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 35% 38%, rgba(200, 255, 0, 0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 65% 72%, rgba(246, 201, 14, 0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 5% 50%, rgba(0, 229, 255, 0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 95% 25%, rgba(139, 92, 246, 0.5) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.sc-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(200, 255, 0, 0.05), transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 100%, rgba(246, 201, 14, 0.04), transparent 60%);
+  pointer-events: none;
+}
+
+/* Game embed container */
+.sc-game-embed {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 8px;
+}
+
+/* Stats row */
+.sc-stats-row {
+  display: flex;
+  gap: 8px;
+}
+
+.sc-stat {
+  flex: 1;
+  background: rgba(5, 5, 20, 0.75);
+  border: 1px solid rgba(200, 255, 0, 0.12);
+  border-radius: 8px;
+  padding: 6px 10px;
+  text-align: center;
+  backdrop-filter: blur(6px);
+}
+
+.sc-stat-lbl {
+  font-family: var(--ff-m);
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 2px;
+}
+
+.sc-stat-val {
+  font-family: var(--ff-m);
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--lime);
+  line-height: 1;
+}
+
+#sc-time-val {
+  color: #63b3ed !important;
+  transition: color 0.3s;
+}
+
+#sc-time-val.sc-danger {
+  color: #f87171 !important;
+  animation: sc-pulse 0.45s infinite alternate;
+}
+
+.sc-best-val {
+  color: #ffd166 !important;
+}
+
+/* Arena */
+.sc-arena {
+  flex: 1;
+  min-height: 100px;
+  position: relative;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(99, 179, 237, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.sc-arena-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(99, 179, 237, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 179, 237, 0.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+}
+
+/* Star */
+#sc-star {
+  position: absolute;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: left 0.12s cubic-bezier(.34, 1.56, .64, 1), top 0.12s cubic-bezier(.34, 1.56, .64, 1);
+  filter: drop-shadow(0 0 8px rgba(246, 201, 14, 0.9));
+  user-select: none;
+  z-index: 3;
+  line-height: 1;
+}
+
+#sc-star:hover {
+  transform: scale(1.2) rotate(15deg);
+}
+
+#sc-star.sc-pop {
+  animation: sc-catchpop 0.25s ease;
+}
+
+/* Overlay */
+.sc-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 2, 14, 0.88);
+  backdrop-filter: blur(6px);
+  border-radius: 10px;
+  z-index: 10;
+  gap: 6px;
+}
+
+.sc-overlay.sc-hidden {
+  display: none;
+}
+
+.sc-ov-icon {
+  font-size: 1.8rem;
+  animation: sc-float 2.5s ease-in-out infinite;
+}
+
+.sc-ov-title {
+  font-family: var(--ff-m);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+
+.sc-ov-sub {
+  font-family: var(--ff-m);
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 1px;
+}
+
+.sc-final {
+  font-family: var(--ff-m);
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #ffd166;
+}
+
+.sc-rating {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Play button */
+.sc-play-btn {
+  background: var(--lime);
+  color: var(--ink);
+  border: none;
+  padding: 7px 22px;
+  border-radius: 6px;
+  font-family: var(--ff-m);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(200, 255, 0, 0.35);
+  transition: transform .15s, box-shadow .15s;
+  margin-top: 2px;
+}
+
+.sc-play-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(200, 255, 0, 0.55);
+}
+
+.sc-play-btn:active {
+  transform: translateY(0);
+}
+
+/* Particle */
+.sc-particle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 0.85rem;
+  z-index: 5;
+  animation: sc-particlefly 0.75s ease forwards;
+}
+
+/* New best badge */
+.sc-newbest {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #ffd166;
+  color: #000;
+  font-family: var(--ff-m);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  animation: sc-fadein 0.4s ease;
+  z-index: 20;
+}
+
+/* Stop card tilt from interfering with game */
+.sc-game-card,
+.sc-game-card:hover {
+  transform: none !important;
+}
+
+/* Keyframes */
+@keyframes sc-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes sc-pulse {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.3;
+  }
+}
+
+@keyframes sc-catchpop {
+  0% {
+    transform: scale(1.7) rotate(20deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes sc-particlefly {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0);
+  }
+}
+
+@keyframes sc-fadein {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes sc-scoreflash {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.4);
+  }
 }
