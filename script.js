@@ -644,7 +644,7 @@ if (!isTouch()) {
     });
   }
 
-  $$(".proj-card,.service-card,.testi-card,.blog-card,.pricing-card").forEach(
+  $$(".proj-card:not(.sc-game-card),.service-card,.testi-card,.blog-card,.pricing-card").forEach(
     (card) => {
       card.addEventListener("mousemove", (e) => {
         const r = card.getBoundingClientRect();
