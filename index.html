@@ -7332,6 +7332,77 @@
     [data-theme="light"] .nav-cta {
       color: #1A0F0A;
     }
+
+  /* ═══════════════════════════════════════════════
+     NAVBAR MOBILE FIX — hamburger & text visibility
+  ═══════════════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* Always show hamburger button */
+    .hb {
+      display: flex !important;
+      z-index: 901;
+      position: relative;
+    }
+
+    /* Hamburger bars: always visible — white + shadow in dark, dark in light */
+    .hb span {
+      background: #ffffff !important;
+      box-shadow: 0 0 6px rgba(0,0,0,0.55);
+    }
+    [data-theme="light"] .hb span {
+      background: #0B1640 !important;
+      box-shadow: none;
+    }
+
+    /* Give the nav a real background on mobile so logo & hamburger are readable */
+    nav#nav {
+      background: rgba(8, 14, 38, 0.82) !important;
+      backdrop-filter: blur(18px) saturate(1.4) !important;
+      -webkit-backdrop-filter: blur(18px) saturate(1.4) !important;
+    }
+    [data-theme="light"] nav#nav {
+      background: rgba(255, 255, 255, 0.88) !important;
+      backdrop-filter: blur(18px) saturate(1.4) !important;
+      -webkit-backdrop-filter: blur(18px) saturate(1.4) !important;
+    }
+
+    /* Logo: gold fallback colour for browsers that don't support background-clip:text */
+    .nav-logo {
+      color: #F5C842 !important;
+    }
+
+    /* Hide desktop links & CTA */
+    .nav-links,
+    .nav-cta {
+      display: none !important;
+    }
+  }
+
+  /* ── Mobile menu (full-screen overlay) ── */
+  .mob-nav {
+    background: rgba(5, 10, 30, 0.97) !important;
+    backdrop-filter: blur(28px) saturate(1.5) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(1.5) !important;
+  }
+  [data-theme="light"] .mob-nav {
+    background: rgba(255, 255, 255, 0.98) !important;
+  }
+
+  /* Mobile menu link text — guaranteed visible in both themes */
+  .mob-nav a {
+    color: rgba(255, 255, 255, 0.92) !important;
+  }
+  [data-theme="light"] .mob-nav a {
+    color: #0B1640 !important;
+  }
+  .mob-nav a:hover {
+    color: var(--sun-core) !important;
+  }
+  [data-theme="light"] .mob-nav a:hover {
+    color: #D84315 !important;
+  }
+
   </style>
 </head>
 
