@@ -7956,6 +7956,291 @@
       .hero { min-height: calc(var(--vh, 1vh) * 100); }
     }
 
+
+    /* ══════════════════════════════════════════════════════════
+       FUNCTIONAL WIDGETS CSS
+    ══════════════════════════════════════════════════════════ */
+
+    /* ── AVAILABILITY WIDGET ── */
+    #availWidget {
+      position: fixed; bottom: 80px; left: 18px; z-index: 800;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    #liveClock {
+      background: var(--card-bg); backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border); border-radius: 12px;
+      padding: 8px 14px; min-width: 120px; text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+    .lc-label {
+      font-family: var(--ff-m); font-size: 8px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px;
+    }
+    #clockTime {
+      font-family: var(--ff-m); font-size: 14px; font-weight: 700;
+      color: var(--text-primary); letter-spacing: 1.5px;
+    }
+    #availBadge {
+      background: var(--card-bg); backdrop-filter: blur(14px);
+      border: 1px solid rgba(109,179,63,.4); border-radius: 12px;
+      padding: 8px 14px; display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+    .avail-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #6db33f;
+      flex-shrink: 0; animation: availPulse 2s ease-in-out infinite;
+    }
+    @keyframes availPulse {
+      0%,100%{box-shadow:0 0 0 0 rgba(109,179,63,.5);}
+      50%{box-shadow:0 0 0 5px rgba(109,179,63,0);}
+    }
+    .avail-text {
+      font-family: var(--ff-m); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: #6db33f;
+    }
+
+    /* ── FLOATING WIDGETS BAR ── */
+    #widgetsBar {
+      position: fixed; bottom: 80px; right: 18px; z-index: 800;
+      display: flex; flex-direction: column; gap: 10px; align-items: flex-end;
+    }
+    .widget-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg); backdrop-filter: blur(12px); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+    .widget-btn:hover { transform: scale(1.15) translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.3); }
+
+    /* ── TOAST NOTIFICATIONS ── */
+    #toastContainer {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+      z-index: 9995; display: flex; flex-direction: column; gap: 10px;
+      align-items: center; pointer-events: none;
+    }
+    .vr-toast {
+      background: var(--nav-bg); border: 1px solid var(--card-border);
+      border-radius: 12px; padding: 12px 20px;
+      font-family: var(--ff-m); font-size: 11px; letter-spacing: 1.5px;
+      color: var(--text-primary); pointer-events: auto;
+      box-shadow: 0 8px 32px rgba(0,0,0,.3);
+      display: flex; align-items: center; gap: 10px;
+      animation: toastIn .4s cubic-bezier(.34,1.56,.64,1) forwards;
+      white-space: nowrap;
+    }
+    .vr-toast.out { animation: toastOut .35s ease forwards; }
+    @keyframes toastIn {
+      from { opacity:0; transform:translateY(20px) scale(.9); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+    @keyframes toastOut {
+      from { opacity:1; transform:translateY(0) scale(1); }
+      to   { opacity:0; transform:translateY(-10px) scale(.9); }
+    }
+
+    /* ── KEYBOARD SHORTCUTS PANEL ── */
+    #kbPanel {
+      position: fixed; inset: 0; z-index: 9990;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.6); backdrop-filter: blur(16px);
+      padding: 20px;
+    }
+    #kbPanel.open { display: flex; }
+    .kb-inner {
+      background: var(--nav-bg); border: 1px solid var(--card-border);
+      border-radius: 20px; padding: 28px; max-width: 440px; width: 100%;
+      box-shadow: 0 24px 64px rgba(0,0,0,.4);
+      animation: toastIn .4s cubic-bezier(.34,1.56,.64,1);
+    }
+    .kb-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px;
+    }
+    .kb-title {
+      font-family: var(--ff-d); font-size: 20px; font-style: italic;
+      color: var(--text-primary);
+    }
+    #kbClose {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); font-size: 24px; line-height: 1;
+      transition: color .2s, transform .2s;
+    }
+    #kbClose:hover { color: var(--text-primary); transform: scale(1.2); }
+    .kb-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 12px; border-radius: 10px;
+      background: rgba(255,255,255,.03); margin-bottom: 6px;
+      font-family: var(--ff-m); font-size: 11px; color: var(--text-secondary);
+    }
+    [data-theme="light"] .kb-row { background: rgba(0,0,0,.03); }
+    .kb-key {
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+      border-radius: 6px; padding: 3px 10px; font-size: 10px; letter-spacing: 1px;
+      color: var(--text-primary); font-weight: 700; font-family: var(--ff-m);
+    }
+    [data-theme="light"] .kb-key { background: rgba(0,0,0,.06); border-color: rgba(0,0,0,.12); }
+    .kb-hint {
+      margin-top: 16px; font-family: var(--ff-m); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-muted); text-align: center;
+    }
+    .kb-hint kbd {
+      background: rgba(245,200,66,.15); border: 1px solid rgba(245,200,66,.3);
+      border-radius: 4px; padding: 2px 7px; color: var(--sun-core);
+      font-family: var(--ff-m); font-size: 10px;
+    }
+
+    /* ── PROJECT QUICK VIEW ── */
+    #quickViewModal {
+      position: fixed; inset: 0; z-index: 9980;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.7); backdrop-filter: blur(20px);
+      padding: 20px;
+    }
+    #quickViewModal.open { display: flex; }
+    #quickViewBox {
+      background: var(--nav-bg); border: 1px solid var(--card-border);
+      border-radius: 24px; width: 100%; max-width: 700px;
+      max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 32px 80px rgba(0,0,0,.5);
+      animation: toastIn .4s cubic-bezier(.34,1.56,.64,1);
+    }
+    .qv-header {
+      padding: 20px 24px; display: flex; justify-content: space-between;
+      align-items: center; border-bottom: 1px solid var(--card-border);
+      position: sticky; top: 0; background: var(--nav-bg); z-index: 2;
+    }
+    #qvTitle {
+      font-family: var(--ff-d); font-size: 20px; font-style: italic;
+      color: var(--text-primary);
+    }
+    #qvClose {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); font-size: 26px; line-height: 1;
+      transition: color .2s, transform .3s var(--ease-spring);
+    }
+    #qvClose:hover { color: var(--house-red); transform: rotate(90deg) scale(1.1); }
+    #qvBody { padding: 24px; }
+
+    /* ── SKILLS SEARCH BAR ── */
+    .skills-search-wrap {
+      display: flex; justify-content: center; margin-bottom: 28px;
+    }
+    #skillSearch {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 100px; padding: 10px 20px;
+      font-family: var(--ff-m); font-size: 11px; letter-spacing: 1px;
+      color: var(--text-primary); width: 100%; max-width: 340px;
+      outline: none; transition: border-color .3s, box-shadow .3s;
+      text-align: center;
+    }
+    #skillSearch::placeholder { color: var(--text-muted); }
+    #skillSearch:focus {
+      border-color: var(--house-orange);
+      box-shadow: 0 0 0 3px rgba(242,140,40,.15);
+    }
+    .skill-card.skill-hidden { display: none; }
+    .skills-no-results {
+      text-align: center; padding: 32px; grid-column: 1/-1;
+      font-family: var(--ff-m); font-size: 12px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+
+    /* ── FORM ENHANCEMENTS ── */
+    #msgCounter {
+      font-family: var(--ff-m); font-size: 9px; letter-spacing: 2px;
+      color: var(--text-muted); text-align: right; margin-top: 4px;
+      transition: color .3s;
+    }
+    #msgCounter.near { color: var(--house-orange); }
+    #msgCounter.full { color: var(--house-red); }
+    .fg input.valid, .fg textarea.valid { border-color: rgba(109,179,63,.6) !important; }
+    .fg input.invalid, .fg textarea.invalid { border-color: rgba(232,82,74,.5) !important; }
+    .field-hint {
+      font-family: var(--ff-m); font-size: 9px; letter-spacing: 1.5px;
+      margin-top: 4px; display: none; color: var(--house-red);
+    }
+    .fg input.invalid ~ .field-hint,
+    .fg textarea.invalid ~ .field-hint { display: block; }
+
+    /* ── BLOG READING TIME ── */
+    .bl-read-time {
+      font-family: var(--ff-m); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;
+    }
+
+    /* ── PROJECT LIKE BUTTON ── */
+    .proj-like {
+      background: none; border: 1px solid var(--card-border); cursor: pointer;
+      color: var(--text-muted); display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--ff-m); font-size: 10px; letter-spacing: 1px;
+      padding: 5px 12px; border-radius: 20px;
+      transition: all .3s var(--ease-spring);
+    }
+    .proj-like:hover { color: var(--house-red); border-color: rgba(232,82,74,.4); transform: scale(1.05); }
+    .proj-like.liked { color: var(--house-red); background: rgba(232,82,74,.1); border-color: rgba(232,82,74,.4); }
+    .proj-like.pop { animation: likePop .4s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes likePop {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.35); }
+      100% { transform: scale(1); }
+    }
+
+    /* ── COPY BUTTONS ── */
+    .copy-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); font-size: 14px;
+      padding: 3px 6px; border-radius: 6px;
+      transition: color .2s, transform .25s var(--ease-spring), background .2s;
+      vertical-align: middle;
+    }
+    .copy-btn:hover { color: var(--sun-core); background: rgba(245,200,66,.1); transform: scale(1.15); }
+
+    /* ── PROJECT FILTER RESULT COUNT ── */
+    #projResultCount {
+      font-family: var(--ff-m); font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px;
+    }
+
+    /* ── SECTION FLASH ── */
+    @keyframes sectionFlash {
+      0%   { outline: 3px solid rgba(245,200,66,0); outline-offset: 0; }
+      40%  { outline: 3px solid rgba(245,200,66,.4); outline-offset: 8px; }
+      100% { outline: 3px solid rgba(245,200,66,0); outline-offset: 16px; }
+    }
+    .section-flash { animation: sectionFlash .8s ease; }
+
+    /* ── PROGRESS INDICATOR on scroll (word count) ── */
+    #readingProgress {
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      z-index: 799; font-family: var(--ff-m); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-muted);
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 20px; padding: 5px 14px; backdrop-filter: blur(8px);
+      opacity: 0; transition: opacity .4s; pointer-events: none;
+    }
+    #readingProgress.show { opacity: 1; }
+
+    /* ── BACK TO TOP COUNTER ── */
+    .back-top-pct {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-family: var(--ff-m); font-size: 8px; color: currentColor;
+      font-weight: 700; opacity: 0; transition: opacity .3s;
+    }
+    .back-top:hover .back-top-pct { opacity: 1; }
+    .back-top:hover svg { opacity: 0; }
+
+    /* ── MOBILE WIDGET POSITIONING ── */
+    @media(max-width: 480px) {
+      #widgetsBar { bottom: 70px; right: 12px; }
+      #availWidget { display: none; }
+      #toastContainer { bottom: 70px; }
+    }
+    @media(max-width: 768px) {
+      .kb-inner { max-width: 94vw; }
+      #quickViewBox { max-width: 96vw; max-height: 85vh; }
+    }
   </style>
 </head>
 
@@ -8781,6 +9066,7 @@
       </button>
     </div>
 
+    <div id="projResultCount"></div>
     <div class="proj-grid" id="projGrid">
       <!-- ApexDeck -->
       <div class="proj-card proj-featured r0" data-cat="design">
@@ -8818,7 +9104,8 @@
           </p>
         </div>
         <div class="proj-footer">
-          <span class="proj-tech">HTML · CSS · JS · Figma</span><a href="https://github.com/Vishandeveloper29"
+          <span class="proj-tech">
+          <button class="proj-like" data-proj="1" aria-label="Like project">♡ <span class="like-count">0</span></button>HTML · CSS · JS · Figma</span><a href="https://github.com/Vishandeveloper29"
             target="_blank" rel="noopener" class="proj-gh">GitHub ↗</a>
         </div>
       </div>
@@ -8868,7 +9155,8 @@
           </p>
         </div>
         <div class="proj-footer">
-          <span class="proj-tech">HTML · CSS · JS</span><a href="https://lkmart.onrender.com/" target="_blank"
+          <span class="proj-tech">
+          <button class="proj-like" data-proj="2" aria-label="Like project">♡ <span class="like-count">0</span></button>HTML · CSS · JS</span><a href="https://lkmart.onrender.com/" target="_blank"
             class="proj-gh">Live ↗</a>
         </div>
       </div>
@@ -8914,7 +9202,8 @@
           </p>
         </div>
         <div class="proj-footer">
-          <span class="proj-tech">JS · REST API</span><a href="https://vishandeveloper29.github.io/Currency-Converter/"
+          <span class="proj-tech">
+          <button class="proj-like" data-proj="3" aria-label="Like project">♡ <span class="like-count">0</span></button>JS · REST API</span><a href="https://vishandeveloper29.github.io/Currency-Converter/"
             target="_blank" class="proj-gh">Live ↗</a>
         </div>
       </div>
@@ -8963,7 +9252,8 @@
           </p>
         </div>
         <div class="proj-footer">
-          <span class="proj-tech">JS · OpenWeather API</span><a href="https://vishandeveloper29.github.io/Weather-app/"
+          <span class="proj-tech">
+          <button class="proj-like" data-proj="4" aria-label="Like project">♡ <span class="like-count">0</span></button>JS · OpenWeather API</span><a href="https://vishandeveloper29.github.io/Weather-app/"
             target="_blank" class="proj-gh">Live ↗</a>
         </div>
       </div>
@@ -9012,7 +9302,8 @@
           </p>
         </div>
         <div class="proj-footer">
-          <span class="proj-tech">JS · GitHub API</span><a href="https://vishandeveloper29.github.io/GitHub-Explorer/"
+          <span class="proj-tech">
+          <button class="proj-like" data-proj="5" aria-label="Like project">♡ <span class="like-count">0</span></button>JS · GitHub API</span><a href="https://vishandeveloper29.github.io/GitHub-Explorer/"
             target="_blank" class="proj-gh">Live ↗</a>
         </div>
       </div>
@@ -9050,7 +9341,8 @@
           </p>
         </div>
         <div class="proj-footer">
-          <span class="proj-tech">HTML · CSS</span><a href="https://github.com/Vishandeveloper29/Netflix-Clone"
+          <span class="proj-tech">
+          <button class="proj-like" data-proj="6" aria-label="Like project">♡ <span class="like-count">0</span></button>HTML · CSS</span><a href="https://github.com/Vishandeveloper29/Netflix-Clone"
             target="_blank" class="proj-gh">GitHub ↗</a>
         </div>
       </div>
@@ -9097,7 +9389,8 @@
           </p>
         </div>
         <div class="proj-footer">
-          <span class="proj-tech">HTML · CSS · JS</span><a href="https://github.com/Vishandeveloper29" target="_blank"
+          <span class="proj-tech">
+          <button class="proj-like" data-proj="7" aria-label="Like project">♡ <span class="like-count">0</span></button>HTML · CSS · JS</span><a href="https://github.com/Vishandeveloper29" target="_blank"
             class="proj-gh">GitHub ↗</a>
         </div>
       </div>
@@ -9306,6 +9599,10 @@
       </div>
     </div>
 
+    <div class="skills-search-wrap">
+      <input type="search" id="skillSearch" placeholder="🔍 Search skills..." aria-label="Search skills" autocomplete="off" />
+    </div>
+    <div id="skillsNoResults" class="skills-no-results" style="display:none;">No skills match your search.</div>
     <h3 class="skills-deep-title">
       Deep-dive <span class="ac">breakdown</span>
     </h3>
@@ -9892,6 +10189,9 @@
       <article class="bl r0">
         <div class="bl-cat">CSS Tips</div>
         <div class="bl-dt">Jan 2025</div>
+        <div class="bl-read-time">⏱ 3 min read</div>
+        <div class="bl-read-time">⏱ 5 min read</div>
+        <div class="bl-read-time">⏱ 4 min read</div>
         <h3 class="bl-tt">5 CSS Tricks I Use on Every Project</h3>
         <p class="bl-ex">
           From custom scroll bars to clip-path animations — CSS patterns
@@ -10113,7 +10413,7 @@
               </svg>
             </div>
             <div class="ci-text">
-              <span class="ci-label">Email</span><span class="ci-value">rabarivishan2@gmail.com</span>
+              <span class="ci-label">Email</span><span class="ci-value">rabarivishan2@gmail.com</span><button class="copy-btn" data-copy="rabarivishan2@gmail.com" title="Copy email" aria-label="Copy email">📋</button>
             </div>
           </a>
           <a href="https://github.com/Vishandeveloper29" target="_blank" rel="noopener" class="ci">
@@ -10164,7 +10464,7 @@
             <div class="f-row">
               <div class="fg">
                 <label for="fname">First Name *</label><input type="text" id="fname" name="fname" placeholder="Vishan"
-                  required autocomplete="given-name" />
+                  required autocomplete="given-name" /><span class="field-hint">Please enter your first name.</span>
               </div>
               <div class="fg">
                 <label for="lname">Last Name</label><input type="text" id="lname" name="lname" placeholder="Rabari"
@@ -10173,7 +10473,7 @@
             </div>
             <div class="fg">
               <label for="femail">Email Address *</label><input type="email" id="femail" name="email"
-                placeholder="you@company.com" required autocomplete="email" />
+                placeholder="you@company.com" required autocomplete="email" /><span class="field-hint">Please enter a valid email.</span>
             </div>
             <div class="fg">
               <label for="subject">Project Type</label><select id="subject" name="subject">
@@ -10200,8 +10500,9 @@
             </div>
             <div class="fg">
               <label for="msg">Your Message *</label><textarea id="msg" name="message"
-                placeholder="Tell me about your project idea, goals, timeline…" required maxlength="500"></textarea>
+                placeholder="Tell me about your project idea, goals, timeline…" required maxlength="500" id="msgArea"></textarea>
             </div>
+            <div id="msgCounter">0 / 500</div>
             <div class="f-check">
               <input type="checkbox" id="consent" name="consent" required /><label for="consent">I agree that Vishan may
                 contact me about my project. No spam,
@@ -10233,13 +10534,55 @@
   <!-- FOOTER -->
   <footer>
     <a href="#" class="f-logo">Vishan.</a>
-    <span class="f-copy">© 2025 Vishan Rabari — Built with passion in Gujarat, India 🏠</span>
+    <span class="f-copy">© 2026 Vishan Rabari — Built with passion in Gujarat, India 🏠</span>
     <div class="f-links">
       <a href="https://github.com/Vishandeveloper29" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/vishan-rabari-7634ab392" target="_blank" rel="noopener">LinkedIn</a>
       <a href="mailto:rabarivishan2@gmail.com">Email</a>
     </div>
   </footer>
+
+
+  <!-- FLOATING WIDGETS BAR -->
+  <div id="widgetsBar" aria-label="Quick action widgets"></div>
+
+  <!-- AVAILABILITY WIDGET -->
+  <div id="availWidget">
+    <div id="liveClock">
+      <div class="lc-label">Gujarat Time</div>
+      <div id="clockTime">--:--</div>
+    </div>
+    <div id="availBadge">
+      <span class="avail-dot"></span>
+      <span class="avail-text">Available for Work</span>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer" aria-live="polite"></div>
+
+  <!-- KEYBOARD SHORTCUTS PANEL -->
+  <div id="kbPanel" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+    <div class="kb-inner">
+      <div class="kb-header">
+        <div class="kb-title">Keyboard Shortcuts</div>
+        <button id="kbClose" aria-label="Close shortcuts panel">×</button>
+      </div>
+      <div id="kbList"></div>
+      <div class="kb-hint">Press <kbd>?</kbd> to toggle this panel</div>
+    </div>
+  </div>
+
+  <!-- PROJECT QUICK VIEW MODAL -->
+  <div id="quickViewModal" role="dialog" aria-modal="true">
+    <div id="quickViewBox">
+      <div class="qv-header">
+        <div id="qvTitle"></div>
+        <button id="qvClose" aria-label="Close preview">×</button>
+      </div>
+      <div id="qvBody"></div>
+    </div>
+  </div>
 
   <!-- BACK TO TOP -->
   <button class="back-top" id="backTop" aria-label="Back to top">
@@ -11184,7 +11527,480 @@
       animate();
     })();
 
-    console.log('✅ Vishan Portfolio — World-Class Edition');
+
+    /* ═══════════════════════════════════════════════════════
+       WORLD-CLASS FUNCTIONAL FEATURES JS
+    ═══════════════════════════════════════════════════════ */
+
+    /* ── TOAST SYSTEM ── */
+    function showToast(msg, icon='✅', duration=3000) {
+      const tc = $('#toastContainer');
+      if (!tc) return;
+      const t = document.createElement('div');
+      t.className = 'vr-toast';
+      t.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
+      tc.appendChild(t);
+      setTimeout(() => {
+        t.classList.add('out');
+        setTimeout(() => t.remove(), 400);
+      }, duration);
+    }
+
+    /* ── LIVE CLOCK (Gujarat = IST = UTC+5:30) ── */
+    function updateClock() {
+      const now = new Date();
+      // IST = UTC + 5:30
+      const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+      const ist = new Date(utc + 5.5 * 3600000);
+      const h = ist.getHours(), m = ist.getMinutes(), s = ist.getSeconds();
+      const pad = n => String(n).padStart(2,'0');
+      const period = h >= 12 ? 'PM' : 'AM';
+      const h12 = h % 12 || 12;
+      const el = $('#clockTime');
+      if (el) el.textContent = `${pad(h12)}:${pad(m)}:${pad(s)} ${period}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* ── BUILD FLOATING WIDGETS ── */
+    const widgetsBar = $('#widgetsBar');
+    if (widgetsBar) {
+      const btnDefs = [
+        { icon: '📧', title: 'Copy email', id: 'wCopyEmail' },
+        { icon: '🔗', title: 'Share portfolio', id: 'wShare' },
+        { icon: '⌨️', title: 'Keyboard shortcuts (?)', id: 'wKb' },
+        { icon: '⬆️', title: 'Back to top', id: 'wTop' },
+      ];
+      btnDefs.forEach(b => {
+        const btn = document.createElement('button');
+        btn.className = 'widget-btn';
+        btn.id = b.id;
+        btn.title = b.title;
+        btn.setAttribute('aria-label', b.title);
+        btn.textContent = b.icon;
+        widgetsBar.appendChild(btn);
+      });
+    }
+
+    /* ── COPY EMAIL widget ── */
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('#wCopyEmail, .copy-btn[data-copy]');
+      if (!btn) return;
+      const text = btn.dataset.copy || 'rabarivishan2@gmail.com';
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Email copied to clipboard!', '📋');
+        btn.textContent = '✅';
+        setTimeout(() => { btn.textContent = btn.id === 'wCopyEmail' ? '📧' : '📋'; }, 1500);
+      }).catch(() => showToast('Copy: rabarivishan2@gmail.com', '📧'));
+    });
+
+    /* ── SHARE PAGE ── */
+    document.getElementById('wShare')?.addEventListener('click', () => {
+      const shareData = {
+        title: 'Vishan Rabari — Frontend Developer',
+        text: 'Check out this amazing frontend developer portfolio!',
+        url: window.location.href
+      };
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          showToast('Portfolio link copied!', '🔗');
+        });
+      }
+    });
+
+    /* ── BACK TO TOP widget ── */
+    document.getElementById('wTop')?.addEventListener('click', () => {
+      lenis ? lenis.scrollTo(0, { duration: 1.4 }) : window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    /* ── KEYBOARD SHORTCUTS PANEL ── */
+    const kbPanel = $('#kbPanel');
+    const kbClose = $('#kbClose');
+
+    const shortcuts = [
+      { key: '?',        desc: 'Toggle shortcuts panel' },
+      { key: 'H',        desc: 'Go to Home / Hero' },
+      { key: 'A',        desc: 'Go to About section' },
+      { key: 'W',        desc: 'Go to Work / Projects' },
+      { key: 'S',        desc: 'Go to Skills section' },
+      { key: 'C',        desc: 'Go to Contact section' },
+      { key: 'T',        desc: 'Toggle Dark / Light mode' },
+      { key: 'Esc',      desc: 'Close modal / panel' },
+      { key: '↑ / ↓',   desc: 'Scroll between sections' },
+    ];
+
+    const kbList = $('#kbList');
+    if (kbList) {
+      shortcuts.forEach(s => {
+        const row = document.createElement('div');
+        row.className = 'kb-row';
+        row.innerHTML = `<span>${s.desc}</span><span class="kb-key">${s.key}</span>`;
+        kbList.appendChild(row);
+      });
+    }
+
+    function openKb() { kbPanel?.classList.add('open'); }
+    function closeKb() { kbPanel?.classList.remove('open'); }
+    kbClose?.addEventListener('click', closeKb);
+    kbPanel?.addEventListener('click', e => { if (e.target === kbPanel) closeKb(); });
+    document.getElementById('wKb')?.addEventListener('click', openKb);
+
+    /* ── GLOBAL KEYBOARD SHORTCUTS ── */
+    const sectionMap = { 'h':'home','a':'about','w':'projects','s':'skills','c':'contact','p':'pricing','e':'experience' };
+    document.addEventListener('keydown', e => {
+      // Don't fire in inputs
+      if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
+
+      const key = e.key.toLowerCase();
+
+      if (e.key === '?') { kbPanel?.classList.contains('open') ? closeKb() : openKb(); return; }
+      if (e.key === 'Escape') { closeKb(); closeQv(); return; }
+      if (e.key === 'T' || e.key === 't') {
+        // Toggle theme
+        const cur = document.documentElement.getAttribute('data-theme');
+        const toggleBtn = $('#themeToggle');
+        if (typeof applyTheme === 'function') applyTheme(cur === 'dark' ? 'light' : 'dark', toggleBtn);
+        showToast(cur === 'dark' ? 'Switched to Day mode ☀️' : 'Switched to Night mode 🌙', '🎨');
+        return;
+      }
+
+      const secId = sectionMap[key];
+      if (secId) {
+        const target = document.getElementById(secId);
+        if (target) {
+          e.preventDefault();
+          const top = target.getBoundingClientRect().top + window.scrollY - 72;
+          lenis ? lenis.scrollTo(top, { duration: 1.2 }) : window.scrollTo({ top, behavior: 'smooth' });
+          target.classList.add('section-flash');
+          setTimeout(() => target.classList.remove('section-flash'), 1000);
+          showToast(`Jumped to ${secId.charAt(0).toUpperCase() + secId.slice(1)}`, '⚡');
+        }
+      }
+
+      // Arrow key section navigation
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        const secs = [...$$('section[id]')];
+        const cur = secs.findIndex(s => {
+          const r = s.getBoundingClientRect();
+          return r.top >= -100 && r.top < window.innerHeight * 0.4;
+        });
+        const next = e.key === 'ArrowDown'
+          ? secs[Math.min(cur + 1, secs.length - 1)]
+          : secs[Math.max(cur - 1, 0)];
+        if (next) {
+          e.preventDefault();
+          const top = next.getBoundingClientRect().top + window.scrollY - 72;
+          lenis ? lenis.scrollTo(top, { duration: 1.2 }) : window.scrollTo({ top, behavior: 'smooth' });
+        }
+      }
+    });
+
+    /* ── PROJECT QUICK VIEW ── */
+    const qvModal = $('#quickViewModal');
+    const qvClose = $('#qvClose');
+    const qvTitle = $('#qvTitle');
+    const qvBody  = $('#qvBody');
+
+    function openQv(data) {
+      if (!qvModal || !qvTitle || !qvBody) return;
+      qvTitle.textContent = data.name;
+      qvBody.innerHTML = `
+        <div style="margin-bottom:16px;">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+            ${(data.tags||[]).map(t=>`<span style="background:rgba(245,200,66,.12);color:var(--sun-core);border:1px solid rgba(245,200,66,.2);border-radius:20px;padding:3px 12px;font-family:var(--ff-m);font-size:10px;letter-spacing:1.5px;">${t}</span>`).join('')}
+          </div>
+          <p style="font-family:var(--ff-b);font-size:15px;line-height:1.8;color:var(--text-secondary);margin-bottom:20px;">${data.desc}</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+            ${data.tech ? `<div style="font-family:var(--ff-m);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);">Tech: <span style="color:var(--text-secondary);">${data.tech}</span></div>` : ''}
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            ${data.live ? `<a href="${data.live}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:100px;background:linear-gradient(135deg,var(--house-red),var(--house-orange));color:#fff;text-decoration:none;font-family:var(--ff-m);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Live Demo ↗</a>` : ''}
+            ${data.code ? `<a href="${data.code}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:100px;border:1.5px solid var(--card-border);color:var(--text-secondary);text-decoration:none;font-family:var(--ff-m);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">View Code</a>` : ''}
+          </div>
+        </div>
+      `;
+      qvModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeQv() {
+      qvModal?.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    qvClose?.addEventListener('click', closeQv);
+    qvModal?.addEventListener('click', e => { if (e.target === qvModal) closeQv(); });
+
+    // Hook preview buttons to quick view
+    const projData = {
+      'ApexDeck — Design System': { desc:'A comprehensive, modern design system & component library with consistent spacing, typography, and interaction patterns.', tags:['Design System','Featured'], tech:'HTML · CSS · JS · Figma', code:'https://github.com/Vishandeveloper29' },
+      'LK Mart': { desc:'Full-featured e-commerce frontend with product listings, cart, and seamless shopping UX. Deployed on Render.', tags:['E-Commerce','Frontend'], tech:'HTML · CSS · JS', live:'https://lkmart.onrender.com/', code:'https://github.com/Vishandeveloper29' },
+      'Currency Converter': { desc:'Real-time currency conversion. Supports 150+ world currencies with live exchange data from a REST API.', tags:['Web API','Finance'], tech:'HTML · CSS · Vanilla JS', live:'https://vishandeveloper29.github.io/Currency-Converter/', code:'https://github.com/Vishandeveloper29' },
+      'Weather App': { desc:'Live weather app with 5-day forecast, current conditions, city search, and beautiful animated weather icons.', tags:['Web API','Weather'], tech:'HTML · CSS · OpenWeather API', live:'https://vishandeveloper29.github.io/weather-app/', code:'https://github.com/Vishandeveloper29' },
+      'Quote Generator': { desc:'Inspirational quote machine with share to Twitter functionality and smooth animated transitions.', tags:['Web API','Fun'], tech:'HTML · CSS · JS', live:'https://vishandeveloper29.github.io/', code:'https://github.com/Vishandeveloper29' },
+      'Netflix Clone': { desc:'Pixel-perfect Netflix homepage clone with responsive design, video hover previews, and complete UI.', tags:['Clone','UI'], tech:'HTML · CSS · JS', code:'https://github.com/Vishandeveloper29' },
+    };
+
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.preview-btn');
+      if (!btn) return;
+      const card = btn.closest('.proj-card');
+      const nameEl = card?.querySelector('.proj-name');
+      const name = nameEl?.textContent?.trim();
+      const data = projData[name] || { desc: 'View this project on GitHub.', tags:[], tech:'', code:'https://github.com/Vishandeveloper29' };
+      data.name = name || 'Project Preview';
+      openQv(data);
+    });
+
+    /* ── PROJECT LIKE SYSTEM ── */
+    const likeStore = JSON.parse(localStorage.getItem('vr-likes') || '{}');
+
+    function updateLikeBtn(btn, count, liked) {
+      const span = btn.querySelector('.like-count');
+      if (span) span.textContent = count;
+      btn.innerHTML = (liked ? '♥ ' : '♡ ') + `<span class="like-count">${count}</span>`;
+      btn.classList.toggle('liked', liked);
+    }
+
+    // Initialize like counts from storage
+    $$('.proj-like').forEach(btn => {
+      const id = btn.dataset.proj;
+      const stored = likeStore[id] || { count: Math.floor(Math.random()*12)+1, liked: false };
+      if (!likeStore[id]) { likeStore[id] = stored; localStorage.setItem('vr-likes', JSON.stringify(likeStore)); }
+      updateLikeBtn(btn, stored.count, stored.liked);
+    });
+
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.proj-like');
+      if (!btn) return;
+      e.stopPropagation();
+      const id = btn.dataset.proj;
+      const s = likeStore[id] || { count: 1, liked: false };
+      s.liked = !s.liked;
+      s.count = s.liked ? s.count + 1 : Math.max(0, s.count - 1);
+      likeStore[id] = s;
+      localStorage.setItem('vr-likes', JSON.stringify(likeStore));
+      updateLikeBtn(btn, s.count, s.liked);
+      btn.classList.add('pop');
+      setTimeout(() => btn.classList.remove('pop'), 400);
+      if (s.liked) showToast('Project liked! 🔥', '❤️', 1500);
+    });
+
+    /* ── PROJECT FILTER with result count ── */
+    const projResultCount = $('#projResultCount');
+    function updateProjCount() {
+      const visible = $$('.proj-card:not(.hidden)').length;
+      const total = $$('.proj-card').length;
+      if (projResultCount) {
+        projResultCount.textContent = visible === total
+          ? `Showing all ${total} projects`
+          : `Showing ${visible} of ${total} projects`;
+      }
+    }
+    // Hook into existing filter buttons (override or extend)
+    const pfBtns = $$('.pf-btn');
+    pfBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        setTimeout(updateProjCount, 50);
+      });
+    });
+    updateProjCount();
+
+    /* ── SKILLS SEARCH ── */
+    const skillSearch = $('#skillSearch');
+    const skillsNoResults = $('#skillsNoResults');
+    if (skillSearch) {
+      skillSearch.addEventListener('input', () => {
+        const q = skillSearch.value.toLowerCase().trim();
+        const cards = $$('.skill-card');
+        let visible = 0;
+        cards.forEach(card => {
+          const nm = card.querySelector('.skill-nm')?.textContent?.toLowerCase() || '';
+          const ds = card.querySelector('.skill-ds')?.textContent?.toLowerCase() || '';
+          const match = !q || nm.includes(q) || ds.includes(q);
+          card.classList.toggle('skill-hidden', !match);
+          if (match) visible++;
+        });
+        if (skillsNoResults) skillsNoResults.style.display = visible === 0 ? 'block' : 'none';
+      });
+      // Clear on escape
+      skillSearch.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { skillSearch.value = ''; skillSearch.dispatchEvent(new Event('input')); }
+      });
+    }
+
+    /* ── FORM: real-time validation + char counter ── */
+    const msgArea = $('#msgArea');
+    const msgCounter = $('#msgCounter');
+    if (msgArea && msgCounter) {
+      msgArea.addEventListener('input', () => {
+        const len = msgArea.value.length;
+        const max = 500;
+        msgCounter.textContent = `${len} / ${max}`;
+        msgCounter.classList.toggle('near', len > 380);
+        msgCounter.classList.toggle('full', len >= max);
+      });
+    }
+
+    // Email validation
+    const femailEl = $('#femail');
+    if (femailEl) {
+      femailEl.addEventListener('blur', () => {
+        const valid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(femailEl.value);
+        femailEl.classList.toggle('valid', valid && femailEl.value.length > 0);
+        femailEl.classList.toggle('invalid', !valid && femailEl.value.length > 0);
+      });
+      femailEl.addEventListener('input', () => {
+        if (femailEl.classList.contains('invalid')) {
+          const valid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(femailEl.value);
+          if (valid) { femailEl.classList.remove('invalid'); femailEl.classList.add('valid'); }
+        }
+      });
+    }
+
+    // First name validation
+    const fnameEl = $('#fname');
+    if (fnameEl) {
+      fnameEl.addEventListener('blur', () => {
+        const valid = fnameEl.value.trim().length >= 2;
+        fnameEl.classList.toggle('valid', valid);
+        fnameEl.classList.toggle('invalid', !valid && fnameEl.value.length > 0);
+      });
+    }
+
+    /* ── SECTION READING PROGRESS ── */
+    const readingProg = $('#readingProgress');
+    const allSections = $$('section[id]');
+    if (readingProg && allSections.length) {
+      window.addEventListener('scroll', () => {
+        let cur = 0;
+        allSections.forEach((sec, i) => {
+          if (window.scrollY >= sec.offsetTop - window.innerHeight / 2) cur = i + 1;
+        });
+        readingProg.textContent = `Section ${cur} of ${allSections.length}`;
+        readingProg.classList.toggle('show', window.scrollY > 200 && window.scrollY < document.documentElement.scrollHeight - window.innerHeight - 100);
+      }, { passive: true });
+    }
+
+    /* ── BACK TO TOP — show scroll percent ── */
+    const backTopEl2 = $('#backTop');
+    if (backTopEl2 && !backTopEl2.querySelector('.back-top-pct')) {
+      const pctEl = document.createElement('span');
+      pctEl.className = 'back-top-pct';
+      pctEl.setAttribute('aria-hidden', 'true');
+      backTopEl2.appendChild(pctEl);
+      window.addEventListener('scroll', () => {
+        const pct = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+        pctEl.textContent = pct + '%';
+      }, { passive: true });
+    }
+
+    /* ── PRICING CALCULATOR INTERACTIVITY ── */
+    // Add hover tooltips to pricing features
+    $$('.price-features li').forEach(li => {
+      li.style.cursor = 'default';
+    });
+
+    /* ── FAQ KEYBOARD NAVIGATION ── */
+    $$('.fq-q').forEach((btn, i, all) => {
+      btn.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); all[Math.min(i+1, all.length-1)]?.focus(); }
+        if (e.key === 'ArrowUp')   { e.preventDefault(); all[Math.max(i-1, 0)]?.focus(); }
+        if (e.key === 'Home')      { e.preventDefault(); all[0]?.focus(); }
+        if (e.key === 'End')       { e.preventDefault(); all[all.length-1]?.focus(); }
+      });
+    });
+
+    /* ── SMOOTH IMAGE placeholder ── */
+    $$('img').forEach(img => {
+      if (img.complete) img.classList.add('loaded');
+      else img.addEventListener('load', () => img.classList.add('loaded'));
+    });
+
+    /* ── BACK TO TOP scroll pct ring SVG ── */
+    const btBtn = $('#backTop');
+    if (btBtn) {
+      // Add a circular progress ring
+      const ring = document.createElementNS('http://www.w3.org/2000/svg','svg');
+      ring.setAttribute('viewBox','0 0 44 44');
+      ring.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);pointer-events:none;';
+      const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      const r = 20;
+      const circ = 2 * Math.PI * r;
+      circle.setAttribute('cx','22');circle.setAttribute('cy','22');circle.setAttribute('r',String(r));
+      circle.setAttribute('fill','none');circle.setAttribute('stroke','var(--sun-core)');
+      circle.setAttribute('stroke-width','2');circle.setAttribute('stroke-linecap','round');
+      circle.setAttribute('stroke-dasharray', String(circ));
+      circle.setAttribute('stroke-dashoffset', String(circ));
+      circle.style.transition = 'stroke-dashoffset .1s linear';
+      ring.appendChild(circle);
+      btBtn.appendChild(ring);
+      btBtn.style.position = 'relative';
+
+      window.addEventListener('scroll', () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = max > 0 ? window.scrollY / max : 0;
+        circle.setAttribute('stroke-dashoffset', String(circ * (1 - pct)));
+      }, { passive: true });
+    }
+
+    /* ── SECTION VISIBILITY ANNOUNCER ── */
+    const sectionNames = {
+      home:'Hero', about:'About', services:'Services', projects:'Projects',
+      process:'Process', skills:'Skills', experience:'Journey', pricing:'Pricing',
+      testimonials:'Testimonials', blog:'Blog', faq:'FAQ', contact:'Contact'
+    };
+
+    /* ── SCROLL-SPY: update reading progress ── */
+    const spyObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && sectionNames[entry.target.id]) {
+          document.title = `${sectionNames[entry.target.id]} — Vishan Rabari`;
+        }
+      });
+    }, { threshold: .4 });
+    $$('section[id]').forEach(sec => spyObs.observe(sec));
+
+    /* ── FORM SUCCESS with confetti enhancement ── */
+    const origContactForm = $('#contactForm');
+    if (origContactForm) {
+      // Enhance existing submit handler with toast
+      origContactForm.addEventListener('submit', () => {
+        setTimeout(() => {
+          const success = $('#formSuccess');
+          if (success && success.style.display !== 'none') {
+            showToast('Message sent! I'll reply within 24 hours 🎉', '📬', 5000);
+          }
+        }, 1500);
+      });
+    }
+
+    /* ── PRINT RESUME shortcut ── */
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'p' && !['INPUT','TEXTAREA'].includes(e.target.tagName)) {
+        // Let native print dialog open normally
+      }
+    });
+
+    /* ── NETWORK STATUS ── */
+    window.addEventListener('online',  () => showToast('Back online! ✅', '🌐', 2000));
+    window.addEventListener('offline', () => showToast('You are offline', '📡', 5000));
+
+    /* ── IDLE DETECTION (30s) — scroll to top hint ── */
+    let idleTimer;
+    const resetIdle = () => {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        if (window.scrollY > 600) showToast('Still here? Scroll up to the top 👆', '💡', 4000);
+      }, 45000);
+    };
+    ['mousemove','keydown','scroll','touchstart'].forEach(ev =>
+      window.addEventListener(ev, resetIdle, { passive: true })
+    );
+    resetIdle();
+
+    console.log('🚀 Vishan Portfolio — World-Class + Feature-Full Edition loaded!');
+    console.log('💡 Keyboard shortcuts: press ? to see all');
 
     /* ═══════════════════════════════════════════════════════
        WORLD-CLASS ENHANCEMENTS
@@ -11449,6 +12265,9 @@
     }
 
   </script>
+  <!-- READING PROGRESS -->
+  <div id="readingProgress">Section 1 of 11</div>
+
 </body>
 
 </html>
