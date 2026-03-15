@@ -8241,6 +8241,805 @@
       .kb-inner { max-width: 94vw; }
       #quickViewBox { max-width: 96vw; max-height: 85vh; }
     }
+
+    /* ══════════════════════════════════════════════════════════════
+       WORLD-CLASS CREATIVE WAYPOINTS  v2
+       Cinematic chapter markers — unique per section, fully responsive
+    ══════════════════════════════════════════════════════════════ */
+
+    /* ── BASE WRAPPER ── */
+    .wp2 {
+      position: relative;
+      margin-bottom: clamp(28px, 5vw, 52px);
+      overflow: visible;
+      --wc: var(--house-orange);   /* color token, overridden per instance */
+    }
+    .wp2-about       { --wc: #5BA8D4; }
+    .wp2-services    { --wc: #E8524A; }
+    .wp2-projects    { --wc: #40B8A0; }
+    .wp2-process     { --wc: #9B5FCF; }
+    .wp2-skills      { --wc: #6DB33F; }
+    .wp2-experience  { --wc: #40B8A0; }
+    .wp2-pricing     { --wc: #F5C842; }
+    .wp2-testimonials{ --wc: #E8758A; }
+    .wp2-blog        { --wc: #5BA8D4; }
+    .wp2-faq         { --wc: #C8A870; }
+    .wp2-contact     { --wc: #40B8A0; }
+
+    /* ── TRACK: the horizontal spine ── */
+    .wp2-track {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      height: 56px;
+      position: relative;
+    }
+
+    /* ── ORB: animated glowing node ── */
+    .wp2-orb {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%,
+        color-mix(in srgb, var(--wc) 40%, white),
+        var(--wc) 55%,
+        color-mix(in srgb, var(--wc) 70%, black) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 3;
+      box-shadow:
+        0 0 0 3px rgba(255,255,255,.08),
+        0 0 20px color-mix(in srgb, var(--wc) 60%, transparent),
+        0 0 40px color-mix(in srgb, var(--wc) 30%, transparent);
+      transform: scale(0) rotate(-180deg);
+      transition: transform .7s cubic-bezier(.34, 1.56, .64, 1);
+      cursor: pointer;
+    }
+    .wp2.wp2-visible .wp2-orb {
+      transform: scale(1) rotate(0deg);
+    }
+    .wp2-orb:hover {
+      transform: scale(1.15) !important;
+      box-shadow:
+        0 0 0 4px rgba(255,255,255,.15),
+        0 0 28px color-mix(in srgb, var(--wc) 80%, transparent),
+        0 0 60px color-mix(in srgb, var(--wc) 40%, transparent) !important;
+    }
+    .wp2-orb-icon {
+      font-size: 20px;
+      line-height: 1;
+      position: relative;
+      z-index: 2;
+      animation: wpOrbIconFloat 3s ease-in-out infinite;
+    }
+    @keyframes wpOrbIconFloat {
+      0%,100%{ transform: translateY(0) rotate(0deg); }
+      50%    { transform: translateY(-3px) rotate(8deg); }
+    }
+
+    /* ── ORB RINGS: concentric pulse rings ── */
+    .wp2-orb-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1.5px solid color-mix(in srgb, var(--wc) 50%, transparent);
+      animation: wpRingPulse 2.2s ease-out infinite;
+      pointer-events: none;
+    }
+    .wp2-orb-ring2 {
+      inset: -14px;
+      border-color: color-mix(in srgb, var(--wc) 25%, transparent);
+      animation-delay: .6s;
+      animation-duration: 2.8s;
+    }
+    @keyframes wpRingPulse {
+      0%   { transform: scale(.8); opacity: 1; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* ── RAIL: the connecting line ── */
+    .wp2-rail {
+      flex: 1;
+      height: 3px;
+      position: relative;
+      background: rgba(255,255,255,.05);
+      overflow: visible;
+      margin: 0 -1px;
+      z-index: 1;
+    }
+    [data-theme="light"] .wp2-rail {
+      background: rgba(0,0,0,.06);
+    }
+    .wp2-rail-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg,
+        var(--wc),
+        color-mix(in srgb, var(--wc) 60%, white) 50%,
+        color-mix(in srgb, var(--wc) 40%, transparent) 100%);
+      border-radius: 4px;
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 1.1s cubic-bezier(.22, 1, .36, 1) .3s;
+    }
+    .wp2.wp2-visible .wp2-rail-fill { transform: scaleX(1); }
+    .wp2-rail-glow {
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 8px;
+      transform: translateY(-50%) scaleX(0);
+      transform-origin: left;
+      background: linear-gradient(90deg,
+        color-mix(in srgb, var(--wc) 50%, transparent),
+        transparent 80%);
+      filter: blur(4px);
+      border-radius: 4px;
+      transition: transform 1.1s cubic-bezier(.22, 1, .36, 1) .3s;
+      pointer-events: none;
+    }
+    .wp2.wp2-visible .wp2-rail-glow { transform: translateY(-50%) scaleX(1); }
+
+    /* Animated shimmer dot travelling along rail */
+    .wp2.wp2-visible .wp2-rail-fill::after {
+      content: '';
+      position: absolute;
+      top: 50%; right: 0;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--wc);
+      transform: translate(50%, -50%);
+      box-shadow: 0 0 10px var(--wc), 0 0 20px var(--wc);
+      animation: wpTravelDot 2.5s ease-in-out infinite 1.2s;
+    }
+    @keyframes wpTravelDot {
+      0%,100%{ opacity: .6; transform: translate(50%,-50%) scale(.8); }
+      50%    { opacity: 1;  transform: translate(50%,-50%) scale(1.3); }
+    }
+
+    /* ── BADGE: the chapter label pill ── */
+    .wp2-badge {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: linear-gradient(135deg,
+        color-mix(in srgb, var(--wc) 12%, transparent),
+        color-mix(in srgb, var(--wc) 6%, transparent) 100%);
+      border: 1px solid color-mix(in srgb, var(--wc) 40%, transparent);
+      border-radius: 100px;
+      padding: 0 20px 0 0;
+      height: 40px;
+      backdrop-filter: blur(12px) saturate(1.5);
+      -webkit-backdrop-filter: blur(12px) saturate(1.5);
+      overflow: hidden;
+      flex-shrink: 0;
+      opacity: 0;
+      transform: translateX(24px) scale(.9);
+      transition: opacity .55s ease .5s, transform .55s cubic-bezier(.34,1.56,.64,1) .5s;
+      cursor: default;
+      box-shadow:
+        0 2px 16px color-mix(in srgb, var(--wc) 15%, transparent),
+        inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .wp2.wp2-visible .wp2-badge {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+    .wp2-badge:hover {
+      background: linear-gradient(135deg,
+        color-mix(in srgb, var(--wc) 20%, transparent),
+        color-mix(in srgb, var(--wc) 10%, transparent));
+      border-color: color-mix(in srgb, var(--wc) 60%, transparent);
+      box-shadow: 0 4px 24px color-mix(in srgb, var(--wc) 25%, transparent);
+      transform: translateY(-2px) !important;
+      transition: all .3s var(--ease-spring) !important;
+    }
+
+    /* Chapter number pill inside badge */
+    .wp2-badge-num {
+      width: 40px; height: 40px;
+      border-radius: 100px;
+      background: var(--wc);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--ff-t);
+      font-size: 15px;
+      color: #fff;
+      letter-spacing: 1px;
+      flex-shrink: 0;
+      text-shadow: 0 1px 4px rgba(0,0,0,.3);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Vertical separator */
+    .wp2-badge-sep {
+      width: 1px;
+      height: 18px;
+      background: color-mix(in srgb, var(--wc) 35%, transparent);
+      margin: 0 12px;
+      flex-shrink: 0;
+    }
+
+    /* Label text */
+    .wp2-badge-label {
+      font-family: var(--ff-m);
+      font-size: clamp(8px, 1.3vw, 10px);
+      font-weight: 700;
+      letter-spacing: clamp(2px, .4vw, 4px);
+      text-transform: uppercase;
+      color: var(--wc);
+      white-space: nowrap;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Floating micro-particles inside badge */
+    .wp2-badge-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      border-radius: 100px;
+    }
+    .wp2-badge-particles span {
+      position: absolute;
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--wc);
+      opacity: 0;
+    }
+    .wp2.wp2-visible .wp2-badge-particles span:nth-child(1) {
+      top: 20%; left: 50%;
+      animation: wpBadgeParticle 3.5s ease-in-out infinite 1s;
+    }
+    .wp2.wp2-visible .wp2-badge-particles span:nth-child(2) {
+      top: 60%; left: 70%;
+      animation: wpBadgeParticle 4s ease-in-out infinite 1.8s;
+    }
+    .wp2.wp2-visible .wp2-badge-particles span:nth-child(3) {
+      top: 40%; left: 30%;
+      animation: wpBadgeParticle 3s ease-in-out infinite 2.2s;
+    }
+    @keyframes wpBadgeParticle {
+      0%   { opacity: 0; transform: translateY(0) scale(0); }
+      20%  { opacity: .8; transform: translateY(-6px) scale(1.5); }
+      100% { opacity: 0; transform: translateY(-18px) scale(0); }
+    }
+
+    /* ── TAIL: short trailing line after badge ── */
+    .wp2-tail {
+      flex: 0 0 clamp(32px, 6vw, 80px);
+      height: 2px;
+      background: rgba(255,255,255,.04);
+      position: relative;
+      overflow: hidden;
+    }
+    [data-theme="light"] .wp2-tail { background: rgba(0,0,0,.04); }
+    .wp2-tail-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg,
+        var(--wc),
+        color-mix(in srgb, var(--wc) 20%, transparent));
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform .8s cubic-bezier(.22,1,.36,1) .9s;
+    }
+    .wp2.wp2-visible .wp2-tail-fill { transform: scaleX(1); }
+
+    /* ── LIGHT MODE OVERRIDES ── */
+    [data-theme="light"] .wp2-badge {
+      background: linear-gradient(135deg,
+        rgba(255,255,255,.85),
+        rgba(255,255,255,.65));
+      border-color: color-mix(in srgb, var(--wc) 35%, transparent);
+      box-shadow: 0 2px 16px rgba(0,0,0,.1), inset 0 1px 0 rgba(255,255,255,.9);
+    }
+    [data-theme="light"] .wp2-rail {
+      background: rgba(0,0,0,.07);
+    }
+    [data-theme="light"] .wp2-orb {
+      box-shadow:
+        0 0 0 3px rgba(0,0,0,.06),
+        0 4px 20px color-mix(in srgb, var(--wc) 45%, transparent),
+        0 8px 40px color-mix(in srgb, var(--wc) 25%, transparent);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .wp2-orb { width: 44px; height: 44px; }
+      .wp2-orb-icon { font-size: 17px; }
+      .wp2-badge { height: 36px; padding-right: 14px; }
+      .wp2-badge-num { width: 36px; height: 36px; font-size: 13px; }
+      .wp2-badge-sep { margin: 0 8px; }
+      .wp2-track { height: 48px; }
+      .wp2-tail { flex: 0 0 24px; }
+    }
+    @media (max-width: 480px) {
+      .wp2-orb { width: 38px; height: 38px; }
+      .wp2-orb-icon { font-size: 15px; }
+      .wp2-orb-ring { inset: -4px; }
+      .wp2-orb-ring2 { inset: -10px; }
+      .wp2-badge { height: 32px; padding-right: 12px; }
+      .wp2-badge-num { width: 32px; height: 32px; font-size: 11px; }
+      .wp2-badge-label { font-size: 8px; letter-spacing: 2px; }
+      .wp2-badge-sep { height: 14px; margin: 0 6px; }
+      .wp2-track { height: 42px; }
+      .wp2-tail { flex: 0 0 16px; }
+    }
+
+    /* ── REDUCED MOTION ── */
+    @media (prefers-reduced-motion: reduce) {
+      .wp2-orb-ring, .wp2-orb-ring2,
+      .wp2-orb-icon,
+      .wp2-badge-particles span,
+      .wp2-rail-fill::after { animation: none !important; }
+    }
+
+    /* ── WAYPOINT CHAPTER PREFIX micro-text above number ── */
+    .wp2-badge-num::before {
+      content: 'CH';
+      position: absolute;
+      top: 4px; left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--ff-m);
+      font-size: 5px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,.5);
+      font-weight: 400;
+    }
+    .wp2-badge-num {
+      position: relative;
+      flex-direction: column;
+      font-size: 14px;
+      letter-spacing: 0;
+      gap: 0;
+      padding-top: 8px;
+    }
+
+    /* ── PROGRESS STRIPE: fill behind rail as user scrolls ── */
+    .wp2::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%; transform: translateY(-50%);
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg,
+        color-mix(in srgb, var(--wc) 8%, transparent),
+        transparent 60%);
+      pointer-events: none;
+    }
+
+    /* ── CONNECTOR DOTS: 3 animated dots between orb and rail ── */
+    .wp2-rail::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 12px;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--wc);
+      transform: translateY(-50%) scale(0);
+      transition: transform .4s var(--ease-spring) .7s;
+    }
+    .wp2.wp2-visible .wp2-rail::before {
+      transform: translateY(-50%) scale(1);
+      animation: wpRailDot 2s ease-in-out infinite 1.2s;
+    }
+    @keyframes wpRailDot {
+      0%,100% { opacity: .4; transform: translateY(-50%) scale(.8); }
+      50%      { opacity: 1;  transform: translateY(-50%) scale(1.5); box-shadow: 0 0 8px var(--wc); }
+    }
+
+    /* ── BADGE SHINE SWEEP ── */
+    .wp2-badge::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 60%; height: 100%;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.12) 50%, transparent 70%);
+      transform: skewX(-20deg);
+      transition: left .7s ease;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+    .wp2.wp2-visible .wp2-badge::before {
+      left: 200%;
+      transition: left 1s ease .6s;
+    }
+    .wp2-badge:hover::before {
+      left: 200% !important;
+      transition: left .5s ease !important;
+    }
+
+    /* ── SPECIAL FIRST WAYPOINT — extra visual ── */
+    .wp2-about .wp2-orb {
+      background: radial-gradient(circle at 35% 35%,
+        #a0d4f0, #5BA8D4 55%, #2a6a94 100%);
+    }
+    .wp2-skills .wp2-orb {
+      background: radial-gradient(circle at 35% 35%,
+        #a8e07a, #6DB33F 55%, #3a6e20 100%);
+    }
+    .wp2-pricing .wp2-orb {
+      background: radial-gradient(circle at 35% 35%,
+        #fff5a0, #F5C842 55%, #b88e10 100%);
+    }
+    .wp2-contact .wp2-orb {
+      background: radial-gradient(circle at 35% 35%,
+        #88dfd0, #40B8A0 55%, #206050 100%);
+    }
+    .wp2-services .wp2-orb {
+      background: radial-gradient(circle at 35% 35%,
+        #f5a09a, #E8524A 55%, #a02820 100%);
+    }
+    .wp2-process .wp2-orb {
+      background: radial-gradient(circle at 35% 35%,
+        #c8a0e8, #9B5FCF 55%, #5a2890 100%);
+    }
+    .wp2-testimonials .wp2-orb {
+      background: radial-gradient(circle at 35% 35%,
+        #f0a8b8, #E8758A 55%, #a03855 100%);
+    }
+    .wp2-blog .wp2-orb {
+      background: radial-gradient(circle at 35% 35%,
+        #90c8e8, #5BA8D4 55%, #2a6080 100%);
+    }
+    .wp2-experience .wp2-orb {
+      background: radial-gradient(circle at 35% 35%,
+        #88dfd0, #40B8A0 55%, #1a5848 100%);
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       COMPREHENSIVE IMPROVEMENT CSS
+    ══════════════════════════════════════════════════════════ */
+
+    /* ── HERO TECH PILLS ── */
+    .hero-tech-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin: 20px auto 28px;
+      max-width: 480px;
+    }
+    .htp {
+      font-family: var(--ff-m);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      border: 1px solid;
+      backdrop-filter: blur(8px);
+      animation: htpFloat var(--hf-d, 4s) ease-in-out infinite var(--hf-del, 0s);
+      cursor: default;
+      transition: transform .3s var(--ease-spring), box-shadow .3s;
+    }
+    .htp:hover { transform: translateY(-4px) scale(1.08); }
+    .htp-html { color:#e34c26; border-color:rgba(227,76,38,.4); background:rgba(227,76,38,.1); --hf-d:4.2s; --hf-del:0s; }
+    .htp-css  { color:#264de4; border-color:rgba(38,77,228,.4); background:rgba(38,77,228,.1); --hf-d:3.8s; --hf-del:-.6s; }
+    .htp-js   { color:#f0db4f; border-color:rgba(240,219,79,.4); background:rgba(240,219,79,.1); --hf-d:4.5s; --hf-del:-1.2s; }
+    .htp-fig  { color:#a259ff; border-color:rgba(162,89,255,.4); background:rgba(162,89,255,.1); --hf-d:3.6s; --hf-del:-1.8s; }
+    .htp-git  { color:#f1502f; border-color:rgba(241,80,47,.4); background:rgba(241,80,47,.1); --hf-d:4.8s; --hf-del:-2.4s; }
+    .htp-api  { color:#40b8a0; border-color:rgba(64,184,160,.4); background:rgba(64,184,160,.1); --hf-d:4.0s; --hf-del:-3s; }
+    @keyframes htpFloat {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-5px); }
+    }
+
+    /* ── HERO TYPEWRITER REWIRE ── */
+    .hero-tw-wrap {
+      font-family: var(--ff-b);
+      font-weight: 300;
+      font-size: clamp(14px, 1.8vw, 18px);
+      letter-spacing: 1px;
+      margin: 0 auto 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: rgba(255,255,255,.7);
+    }
+    .hero-tw-prefix { opacity: .7; }
+    .hero-tw {
+      color: var(--sun-core);
+      font-weight: 600;
+      min-width: 200px;
+      text-align: left;
+    }
+    .hero-tw-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: var(--sun-core);
+      border-radius: 1px;
+      animation: twCursorBlink .75s ease-in-out infinite;
+      vertical-align: middle;
+      margin-left: 2px;
+    }
+    @keyframes twCursorBlink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+    /* hero-desc tighter */
+    .hero-desc { max-width: 480px; margin-bottom: 0; }
+    .hero-desc strong { color: #fff; font-style: normal; font-weight: 700; }
+
+    /* hero eyebrow separator */
+    .hero-eyebrow-sep { color: rgba(255,255,255,.3); }
+
+    /* CTA icons */
+    .cta-main { display: inline-flex; align-items: center; gap: 8px; }
+    .cta-main svg { transition: transform .3s var(--ease-spring); flex-shrink: 0; }
+    .cta-main:hover svg { transform: translateX(4px); }
+    .cta-dl { display: inline-flex; align-items: center; gap: 8px; }
+
+    /* ── NAV UPGRADES ── */
+    .nav-logo { display: flex; align-items: center; gap: 6px; }
+    .nav-logo-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #6db33f;
+      box-shadow: 0 0 8px rgba(109,179,63,.7);
+      animation: navDotPulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes navDotPulse {
+      0%,100% { transform: scale(1); box-shadow: 0 0 6px rgba(109,179,63,.5); }
+      50%      { transform: scale(1.4); box-shadow: 0 0 12px rgba(109,179,63,.9); }
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--ff-m);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #6db33f;
+      background: rgba(109,179,63,.1);
+      border: 1px solid rgba(109,179,63,.25);
+      border-radius: 100px;
+      padding: 5px 12px;
+      white-space: nowrap;
+    }
+    .nav-status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #6db33f;
+      animation: navDotPulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @media(max-width: 1100px) { .nav-status { display: none; } }
+    @media(max-width: 768px)  { .nav-right { gap: 8px; } }
+
+    /* ── ACTIVE NAV LINK PILL ── */
+    .nav-links a.active {
+      color: var(--text-primary);
+      background: rgba(245,200,66,.1);
+      border-radius: 6px;
+      padding: 3px 10px;
+    }
+    .nav-links a.active::after { width: 0 !important; }
+
+    /* ── FOOTER RICH ── */
+    .footer-rich {
+      position: relative;
+      background: var(--footer-bg);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--card-border);
+    }
+    .footer-wave {
+      line-height: 0;
+      margin-bottom: -2px;
+      pointer-events: none;
+    }
+    .footer-wave svg { display: block; width: 100%; }
+    .footer-body {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.4fr;
+      gap: clamp(24px, 4vw, 56px);
+      padding: clamp(36px, 6vw, 64px) var(--px) clamp(24px, 4vw, 40px);
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .footer-brand { display: flex; flex-direction: column; gap: 16px; }
+    .footer-tagline {
+      font-family: var(--ff-b);
+      font-size: clamp(12px, 1.3vw, 14px);
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 260px;
+    }
+    .footer-socials {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .f-social-btn {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), background .3s, color .3s, border-color .3s, box-shadow .3s;
+    }
+    .f-social-btn:hover {
+      transform: translateY(-4px) scale(1.1);
+      background: var(--wc, linear-gradient(135deg, var(--house-red), var(--house-orange)));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+    .footer-col { display: flex; flex-direction: column; gap: 16px; }
+    .footer-col-title {
+      font-family: var(--ff-m);
+      font-size: 9px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .footer-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-nav a {
+      font-family: var(--ff-b);
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color .25s, transform .25s var(--ease-spring);
+    }
+    .footer-nav a::before {
+      content: '›';
+      color: var(--sun-core);
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity .25s, transform .25s;
+      flex-shrink: 0;
+    }
+    .footer-nav a:hover {
+      color: var(--text-primary);
+      transform: translateX(6px);
+    }
+    .footer-nav a:hover::before { opacity: 1; transform: translateX(0); }
+
+    .footer-contact-list { display: flex; flex-direction: column; gap: 12px; }
+    .footer-contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-family: var(--ff-b);
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color .25s, transform .25s var(--ease-spring);
+      line-height: 1.5;
+    }
+    a.footer-contact-item:hover { color: var(--sun-core); transform: translateX(4px); }
+    .fci-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+    .footer-bottom {
+      border-top: 1px solid var(--card-border);
+      padding: clamp(16px, 2vw, 22px) var(--px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .f-copy {
+      font-family: var(--ff-m);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+    }
+    .footer-bottom-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--ff-m);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+    }
+    .footer-bottom-links a, .footer-bottom-links button {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color .25s;
+      padding: 0;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+    }
+    .footer-bottom-links a:hover, .footer-bottom-links button:hover { color: var(--sun-core); }
+
+    /* Footer responsive */
+    @media(max-width: 1024px) {
+      .footer-body { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; flex-direction: row; align-items: flex-start; gap: 32px; }
+      .footer-tagline { max-width: none; }
+    }
+    @media(max-width: 640px) {
+      .footer-body { grid-template-columns: 1fr; gap: 28px; }
+      .footer-brand { flex-direction: column; }
+      .footer-bottom { justify-content: center; text-align: center; }
+    }
+
+    /* ── MARQUEE DIVIDER — colour coded pills ── */
+    .m-item {
+      transition: color .3s, transform .3s var(--ease-spring);
+    }
+    .m-item:hover { transform: scale(1.1) translateY(-2px); }
+
+    /* ── HERO STATS enhancement ── */
+    .stat-item {
+      cursor: default;
+    }
+    .stat-item:hover {
+      background: rgba(255,255,255,.04);
+    }
+    [data-theme="light"] .stat-item:hover {
+      background: rgba(0,0,0,.03);
+    }
+
+    /* ── SECTION eyebrow lines coloured ── */
+    #about    .s-eye::before { background: var(--sky-mid); }
+    #services .s-eye::before { background: var(--house-red); }
+    #projects .s-eye::before { background: var(--house-teal); }
+    #process  .s-eye::before { background: var(--house-purple); }
+    #skills   .s-eye::before { background: var(--grass-bright); }
+    #experience .s-eye::before { background: var(--house-teal); }
+    #pricing  .s-eye::before { background: var(--sun-core); }
+    #testimonials .s-eye::before { background: var(--house-pink); }
+    #blog     .s-eye::before { background: var(--sky-mid); }
+    #faq      .s-eye::before { background: var(--road-warm); }
+    #contact  .s-eye::before { background: var(--house-teal); }
+
+    /* ── SCROLL HINT COLOUR ── */
+    [data-theme="light"] .sh-mouse {
+      border-color: rgba(255,255,255,.7);
+    }
+    [data-theme="light"] .sh-label {
+      color: rgba(255,255,255,.8);
+    }
+
+    /* ── SECTION GLOW LINES more visible ── */
+    .sec-glow-top {
+      opacity: .25;
+      height: 2px;
+    }
+
+    /* ── LIGHT MODE footer ── */
+    [data-theme="light"] .footer-rich {
+      background: rgba(255,248,236,.97);
+      border-top-color: rgba(242,140,40,.2);
+    }
+    [data-theme="light"] .footer-tagline { color: rgba(26,15,10,.55); }
+    [data-theme="light"] .footer-col-title { color: rgba(26,15,10,.4); border-bottom-color: rgba(0,0,0,.08); }
+    [data-theme="light"] .footer-nav a { color: rgba(26,15,10,.65); }
+    [data-theme="light"] .footer-nav a:hover { color: var(--house-orange); }
+    [data-theme="light"] .footer-contact-item { color: rgba(26,15,10,.65); }
+    [data-theme="light"] .f-copy { color: rgba(26,15,10,.4); }
+    [data-theme="light"] .footer-bottom { border-color: rgba(0,0,0,.08); }
+    [data-theme="light"] .f-social-btn { background: rgba(255,255,255,.9); border-color: rgba(0,0,0,.1); color: rgba(26,15,10,.6); }
   </style>
 </head>
 
@@ -8466,7 +9265,10 @@
 
   <!-- NAV -->
   <nav id="nav">
-    <a href="#" class="nav-logo">Vishan.</a>
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-text">Vishan.</span>
+      <span class="nav-logo-dot" aria-hidden="true"></span>
+    </a>
     <ul class="nav-links" role="list">
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
@@ -8476,7 +9278,13 @@
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <a href="#contact" class="nav-cta">Hire Me</a>
+    <div class="nav-right">
+      <div class="nav-status" title="Available for freelance work">
+        <span class="nav-status-dot"></span>
+        <span class="nav-status-text">Open to Work</span>
+      </div>
+      <a href="#contact" class="nav-cta">Hire Me</a>
+    </div>
     <button class="hb" id="hb" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -8638,30 +9446,52 @@
 
     <!-- HERO CONTENT -->
     <div class="hero-content">
+      <!-- Eyebrow badge -->
       <div class="hero-eyebrow">
         <div class="eyebrow-dot"></div>
         <span>Available for Freelance</span>
-        <span style="color: rgba(255, 255, 255, 0.3)">·</span>
-        <span>📍 Gujarat, India</span>
+        <span class="hero-eyebrow-sep">·</span>
+        <span>📍 Gandhidham, Gujarat</span>
       </div>
+
+      <!-- Main title with letter-split effect -->
       <h1 class="hero-title">
         <span class="line1">FRONTEND</span>
         <span class="line2">DEVELOPER</span>
       </h1>
-      <p class="hero-sub">& CREATOR</p>
-      <p class="hero-desc">
-        Hi, I'm
-        <strong style="color: #fff; font-style: normal">Vishan Rabari</strong>
-        — crafting pixel-perfect, interactive web experiences from
-        <strong style="color: #fff; font-style: normal">Gandhidham, Gujarat</strong>.
-      </p>
-      <div class="hero-ctas">
-        <a href="#projects" class="cta-main">View My Work →</a>
-        <a href="#contact" class="cta-ghost">Let's Talk</a>
-        <a href="Vishan_dev_CV (2).pdf" class="cta-dl" download>Resume ↓</a>
+
+      <!-- Animated typewriter tagline -->
+      <div class="hero-tw-wrap">
+        <span class="hero-tw-prefix">I craft </span>
+        <span class="hero-tw" aria-live="polite" id="twWord"></span>
+        <span class="hero-tw-cursor" aria-hidden="true"></span>
       </div>
-      <div class="hero-tw" aria-live="polite">
-        <span>I build </span><span class="tw-word" id="twWord"></span><span class="tw-cur" aria-hidden="true">|</span>
+
+      <p class="hero-desc">
+        Hi, I'm <strong>Vishan Rabari</strong> — building fast, beautiful,
+        pixel-perfect web experiences that people love to use.
+      </p>
+
+      <!-- Floating tech badge pills -->
+      <div class="hero-tech-pills" aria-hidden="true">
+        <span class="htp htp-html">HTML5</span>
+        <span class="htp htp-css">CSS3</span>
+        <span class="htp htp-js">JS ES6+</span>
+        <span class="htp htp-fig">Figma</span>
+        <span class="htp htp-git">Git</span>
+        <span class="htp htp-api">REST APIs</span>
+      </div>
+
+      <div class="hero-ctas">
+        <a href="#projects" class="cta-main">
+          <span>View My Work</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#contact" class="cta-ghost">Let's Talk</a>
+        <a href="Vishan_dev_CV (2).pdf" class="cta-dl" download>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Resume
+        </a>
       </div>
     </div>
 
@@ -8764,10 +9594,18 @@
     <span class="sec-particle" style="left: 90%; top: 20%; --pf-dur: 12s; --pf-del: -4s" aria-hidden="true">☀️</span>
     <span class="sec-particle" style="left: 75%; top: 65%; --pf-dur: 19s; --pf-del: -8s" aria-hidden="true">🌿</span>
     <span class="sec-particle" style="left: 15%; top: 80%; --pf-dur: 14s; --pf-del: -2s" aria-hidden="true">⭐</span>
-    <div class="waypoint-wrap" id="wp-about" style="--wp-color: var(--sky-mid)">
-      <div class="waypoint-dot"></div>
-      <div class="waypoint-line"></div>
-      <div class="waypoint-tag">Chapter 01 — Who I Am</div>
+    <div class="wp2 wp2-about" id="wp-about" data-chapter="01" data-label="Who I Am" data-icon="🧑‍💻" data-color="#5BA8D4" role="presentation" aria-hidden="true">
+      <div class="wp2-track">
+        <div class="wp2-orb"><div class="wp2-orb-ring"></div><div class="wp2-orb-ring wp2-orb-ring2"></div><span class="wp2-orb-icon">🧑‍💻</span></div>
+        <div class="wp2-rail"><div class="wp2-rail-fill"></div><div class="wp2-rail-glow"></div></div>
+        <div class="wp2-badge">
+          <div class="wp2-badge-num">01</div>
+          <div class="wp2-badge-sep"></div>
+          <div class="wp2-badge-label">Who I Am</div>
+          <div class="wp2-badge-particles"><span></span><span></span><span></span></div>
+        </div>
+        <div class="wp2-tail"><div class="wp2-tail-fill"></div></div>
+      </div>
     </div>
     <div class="about-grid">
       <div class="id-card r0">
@@ -8904,14 +9742,18 @@
     <span class="sec-particle" style="left: 8%; top: 25%; --pf-dur: 13s; --pf-del: -3s" aria-hidden="true">🏠</span>
     <span class="sec-particle" style="left: 85%; top: 30%; --pf-dur: 17s; --pf-del: -6s" aria-hidden="true">🎨</span>
     <span class="sec-particle" style="left: 50%; top: 70%; --pf-dur: 15s; --pf-del: -1s" aria-hidden="true">❓</span>
-    <div class="waypoint-wrap" id="wp-services" style="
-          --wp-color: var(--house-red);
-          max-width: 1300px;
-          margin: 0 auto 0;
-        ">
-      <div class="waypoint-dot"></div>
-      <div class="waypoint-line"></div>
-      <div class="waypoint-tag">Chapter 02 — Services</div>
+    <div class="wp2 wp2-services" id="wp-services" data-chapter="02" data-label="Services" data-icon="⚡" data-color="#E8524A" role="presentation" aria-hidden="true">
+      <div class="wp2-track">
+        <div class="wp2-orb"><div class="wp2-orb-ring"></div><div class="wp2-orb-ring wp2-orb-ring2"></div><span class="wp2-orb-icon">⚡</span></div>
+        <div class="wp2-rail"><div class="wp2-rail-fill"></div><div class="wp2-rail-glow"></div></div>
+        <div class="wp2-badge">
+          <div class="wp2-badge-num">02</div>
+          <div class="wp2-badge-sep"></div>
+          <div class="wp2-badge-label">Services</div>
+          <div class="wp2-badge-particles"><span></span><span></span><span></span></div>
+        </div>
+        <div class="wp2-tail"><div class="wp2-tail-fill"></div></div>
+      </div>
     </div>
     <div style="max-width: 1300px; margin: 0 auto">
       <div class="s-eye r-left">What I Offer</div>
@@ -9031,10 +9873,18 @@
     <span class="sec-particle" style="left: 4%; top: 20%; --pf-dur: 15s; --pf-del: -5s" aria-hidden="true">🌿</span>
     <span class="sec-particle" style="left: 92%; top: 40%; --pf-dur: 11s; --pf-del: -2s" aria-hidden="true">💻</span>
     <span class="sec-particle" style="left: 45%; top: 80%; --pf-dur: 18s; --pf-del: -9s" aria-hidden="true">🏠</span>
-    <div class="waypoint-wrap" id="wp-projects" style="--wp-color: var(--house-teal)">
-      <div class="waypoint-dot"></div>
-      <div class="waypoint-line"></div>
-      <div class="waypoint-tag">Chapter 03 — Work</div>
+    <div class="wp2 wp2-projects" id="wp-projects" data-chapter="03" data-label="Featured Work" data-icon="🚀" data-color="#40B8A0" role="presentation" aria-hidden="true">
+      <div class="wp2-track">
+        <div class="wp2-orb"><div class="wp2-orb-ring"></div><div class="wp2-orb-ring wp2-orb-ring2"></div><span class="wp2-orb-icon">🚀</span></div>
+        <div class="wp2-rail"><div class="wp2-rail-fill"></div><div class="wp2-rail-glow"></div></div>
+        <div class="wp2-badge">
+          <div class="wp2-badge-num">03</div>
+          <div class="wp2-badge-sep"></div>
+          <div class="wp2-badge-label">Featured Work</div>
+          <div class="wp2-badge-particles"><span></span><span></span><span></span></div>
+        </div>
+        <div class="wp2-tail"><div class="wp2-tail-fill"></div></div>
+      </div>
     </div>
     <div class="proj-hd r0">
       <div>
@@ -9451,14 +10301,18 @@
     </div>
     <span class="sec-particle" style="left: 10%; top: 30%; --pf-dur: 14s; --pf-del: -4s" aria-hidden="true">🔍</span>
     <span class="sec-particle" style="left: 80%; top: 20%; --pf-dur: 16s; --pf-del: -7s" aria-hidden="true">🚀</span>
-    <div class="waypoint-wrap" id="wp-process" style="
-          --wp-color: var(--house-purple);
-          max-width: 1300px;
-          margin: 0 auto 0;
-        ">
-      <div class="waypoint-dot"></div>
-      <div class="waypoint-line"></div>
-      <div class="waypoint-tag">Chapter 04 — Process</div>
+    <div class="wp2 wp2-process" id="wp-process" data-chapter="04" data-label="My Process" data-icon="⚙️" data-color="#9B5FCF" role="presentation" aria-hidden="true">
+      <div class="wp2-track">
+        <div class="wp2-orb"><div class="wp2-orb-ring"></div><div class="wp2-orb-ring wp2-orb-ring2"></div><span class="wp2-orb-icon">⚙️</span></div>
+        <div class="wp2-rail"><div class="wp2-rail-fill"></div><div class="wp2-rail-glow"></div></div>
+        <div class="wp2-badge">
+          <div class="wp2-badge-num">04</div>
+          <div class="wp2-badge-sep"></div>
+          <div class="wp2-badge-label">My Process</div>
+          <div class="wp2-badge-particles"><span></span><span></span><span></span></div>
+        </div>
+        <div class="wp2-tail"><div class="wp2-tail-fill"></div></div>
+      </div>
     </div>
     <div style="max-width: 1300px; margin: 0 auto">
       <div class="s-eye r-left">How I Work</div>
@@ -9538,10 +10392,18 @@
     <span class="sec-particle" style="left: 6%; top: 18%; --pf-dur: 17s; --pf-del: -5s" aria-hidden="true">🌿</span>
     <span class="sec-particle" style="left: 88%; top: 35%; --pf-dur: 13s; --pf-del: -2s" aria-hidden="true">⭐</span>
     <span class="sec-particle" style="left: 55%; top: 75%; --pf-dur: 20s; --pf-del: -9s" aria-hidden="true">🌳</span>
-    <div class="waypoint-wrap" id="wp-skills" style="--wp-color: var(--grass-bright)">
-      <div class="waypoint-dot"></div>
-      <div class="waypoint-line"></div>
-      <div class="waypoint-tag">Chapter 05 — Skills</div>
+    <div class="wp2 wp2-skills" id="wp-skills" data-chapter="05" data-label="Skills &amp; Tools" data-icon="🌐" data-color="#6DB33F" role="presentation" aria-hidden="true">
+      <div class="wp2-track">
+        <div class="wp2-orb"><div class="wp2-orb-ring"></div><div class="wp2-orb-ring wp2-orb-ring2"></div><span class="wp2-orb-icon">🌐</span></div>
+        <div class="wp2-rail"><div class="wp2-rail-fill"></div><div class="wp2-rail-glow"></div></div>
+        <div class="wp2-badge">
+          <div class="wp2-badge-num">05</div>
+          <div class="wp2-badge-sep"></div>
+          <div class="wp2-badge-label">Skills &amp; Tools</div>
+          <div class="wp2-badge-particles"><span></span><span></span><span></span></div>
+        </div>
+        <div class="wp2-tail"><div class="wp2-tail-fill"></div></div>
+      </div>
     </div>
     <div class="s-eye r-left">What I Work With</div>
     <h2 class="s-title r0">Skills <span class="ac">&</span> Tools</h2>
@@ -9824,9 +10686,17 @@
           max-width: 1300px;
           margin: 0 auto 0;
         ">
-      <div class="waypoint-dot"></div>
-      <div class="waypoint-line"></div>
-      <div class="waypoint-tag">Chapter 06 — Journey</div>
+      <div class="wp2-track">
+        <div class="wp2-orb"><div class="wp2-orb-ring"></div><div class="wp2-orb-ring wp2-orb-ring2"></div><span class="wp2-orb-icon">🗺️</span></div>
+        <div class="wp2-rail"><div class="wp2-rail-fill"></div><div class="wp2-rail-glow"></div></div>
+        <div class="wp2-badge">
+          <div class="wp2-badge-num">06</div>
+          <div class="wp2-badge-sep"></div>
+          <div class="wp2-badge-label">My Journey</div>
+          <div class="wp2-badge-particles"><span></span><span></span><span></span></div>
+        </div>
+        <div class="wp2-tail"><div class="wp2-tail-fill"></div></div>
+      </div>
     </div>
     <div style="max-width: 1300px; margin: 0 auto">
       <div class="s-eye r-left">My Story</div>
@@ -9944,10 +10814,18 @@
     </div>
     <span class="sec-particle" style="left: 12%; top: 18%; --pf-dur: 16s; --pf-del: -4s" aria-hidden="true">💰</span>
     <span class="sec-particle" style="left: 82%; top: 28%; --pf-dur: 13s; --pf-del: -1s" aria-hidden="true">⭐</span>
-    <div class="waypoint-wrap" id="wp-pricing" style="--wp-color: var(--sun-core)">
-      <div class="waypoint-dot"></div>
-      <div class="waypoint-line"></div>
-      <div class="waypoint-tag">Chapter 07 — Pricing</div>
+    <div class="wp2 wp2-pricing" id="wp-pricing" data-chapter="07" data-label="Pricing Plans" data-icon="💰" data-color="#F5C842" role="presentation" aria-hidden="true">
+      <div class="wp2-track">
+        <div class="wp2-orb"><div class="wp2-orb-ring"></div><div class="wp2-orb-ring wp2-orb-ring2"></div><span class="wp2-orb-icon">💰</span></div>
+        <div class="wp2-rail"><div class="wp2-rail-fill"></div><div class="wp2-rail-glow"></div></div>
+        <div class="wp2-badge">
+          <div class="wp2-badge-num">07</div>
+          <div class="wp2-badge-sep"></div>
+          <div class="wp2-badge-label">Pricing Plans</div>
+          <div class="wp2-badge-particles"><span></span><span></span><span></span></div>
+        </div>
+        <div class="wp2-tail"><div class="wp2-tail-fill"></div></div>
+      </div>
     </div>
     <div class="s-eye r-left">Transparent Pricing</div>
     <h2 class="s-title r0">Choose Your <span class="ac">Plan</span></h2>
@@ -10073,14 +10951,18 @@
     </div>
     <span class="sec-particle" style="left: 5%; top: 30%; --pf-dur: 14s; --pf-del: -5s" aria-hidden="true">💬</span>
     <span class="sec-particle" style="left: 90%; top: 20%; --pf-dur: 18s; --pf-del: -3s" aria-hidden="true">❤️</span>
-    <div class="waypoint-wrap" id="wp-testimonials" style="
-          --wp-color: var(--house-pink);
-          max-width: 1300px;
-          margin: 0 auto 0;
-        ">
-      <div class="waypoint-dot"></div>
-      <div class="waypoint-line"></div>
-      <div class="waypoint-tag">Chapter 08 — Clients</div>
+    <div class="wp2 wp2-testimonials" id="wp-testimonials" data-chapter="08" data-label="Client Love" data-icon="💬" data-color="#E8758A" role="presentation" aria-hidden="true">
+      <div class="wp2-track">
+        <div class="wp2-orb"><div class="wp2-orb-ring"></div><div class="wp2-orb-ring wp2-orb-ring2"></div><span class="wp2-orb-icon">💬</span></div>
+        <div class="wp2-rail"><div class="wp2-rail-fill"></div><div class="wp2-rail-glow"></div></div>
+        <div class="wp2-badge">
+          <div class="wp2-badge-num">08</div>
+          <div class="wp2-badge-sep"></div>
+          <div class="wp2-badge-label">Client Love</div>
+          <div class="wp2-badge-particles"><span></span><span></span><span></span></div>
+        </div>
+        <div class="wp2-tail"><div class="wp2-tail-fill"></div></div>
+      </div>
     </div>
     <div style="max-width: 1300px; margin: 0 auto">
       <div class="s-eye r-left">Kind Words</div>
@@ -10178,10 +11060,18 @@
     </div>
     <span class="sec-particle" style="left: 9%; top: 25%; --pf-dur: 15s; --pf-del: -6s" aria-hidden="true">📝</span>
     <span class="sec-particle" style="left: 85%; top: 60%; --pf-dur: 12s; --pf-del: -2s" aria-hidden="true">💡</span>
-    <div class="waypoint-wrap" id="wp-blog" style="--wp-color: var(--sky-mid)">
-      <div class="waypoint-dot"></div>
-      <div class="waypoint-line"></div>
-      <div class="waypoint-tag">Chapter 09 — Blog</div>
+    <div class="wp2 wp2-blog" id="wp-blog" data-chapter="09" data-label="Dev Notes" data-icon="📝" data-color="#5BA8D4" role="presentation" aria-hidden="true">
+      <div class="wp2-track">
+        <div class="wp2-orb"><div class="wp2-orb-ring"></div><div class="wp2-orb-ring wp2-orb-ring2"></div><span class="wp2-orb-icon">📝</span></div>
+        <div class="wp2-rail"><div class="wp2-rail-fill"></div><div class="wp2-rail-glow"></div></div>
+        <div class="wp2-badge">
+          <div class="wp2-badge-num">09</div>
+          <div class="wp2-badge-sep"></div>
+          <div class="wp2-badge-label">Dev Notes</div>
+          <div class="wp2-badge-particles"><span></span><span></span><span></span></div>
+        </div>
+        <div class="wp2-tail"><div class="wp2-tail-fill"></div></div>
+      </div>
     </div>
     <div class="s-eye r-left">Dev Notes</div>
     <h2 class="s-title r0">Blog <span class="ac">&</span> Thoughts</h2>
@@ -10190,8 +11080,6 @@
         <div class="bl-cat">CSS Tips</div>
         <div class="bl-dt">Jan 2025</div>
         <div class="bl-read-time">⏱ 3 min read</div>
-        <div class="bl-read-time">⏱ 5 min read</div>
-        <div class="bl-read-time">⏱ 4 min read</div>
         <h3 class="bl-tt">5 CSS Tricks I Use on Every Project</h3>
         <p class="bl-ex">
           From custom scroll bars to clip-path animations — CSS patterns
@@ -10242,14 +11130,18 @@
     <div class="sec-glow-top" style="--glow-color: var(--road-warm)" aria-hidden="true"></div>
     <span class="sec-particle" style="left: 6%; top: 35%; --pf-dur: 17s; --pf-del: -4s" aria-hidden="true">“</span>
     <span class="sec-particle" style="left: 88%; top: 22%; --pf-dur: 14s; --pf-del: -7s" aria-hidden="true">💬</span>
-    <div class="waypoint-wrap" id="wp-faq" style="
-          --wp-color: var(--road-warm);
-          max-width: 1300px;
-          margin: 0 auto 0;
-        ">
-      <div class="waypoint-dot"></div>
-      <div class="waypoint-line"></div>
-      <div class="waypoint-tag">Chapter 10 — FAQ</div>
+    <div class="wp2 wp2-faq" id="wp-faq" data-chapter="10" data-label="Questions" data-icon="💡" data-color="#C8A870" role="presentation" aria-hidden="true">
+      <div class="wp2-track">
+        <div class="wp2-orb"><div class="wp2-orb-ring"></div><div class="wp2-orb-ring wp2-orb-ring2"></div><span class="wp2-orb-icon">💡</span></div>
+        <div class="wp2-rail"><div class="wp2-rail-fill"></div><div class="wp2-rail-glow"></div></div>
+        <div class="wp2-badge">
+          <div class="wp2-badge-num">10</div>
+          <div class="wp2-badge-sep"></div>
+          <div class="wp2-badge-label">Questions</div>
+          <div class="wp2-badge-particles"><span></span><span></span><span></span></div>
+        </div>
+        <div class="wp2-tail"><div class="wp2-tail-fill"></div></div>
+      </div>
     </div>
     <div style="max-width: 1300px; margin: 0 auto">
       <div class="faq-outer">
@@ -10389,10 +11281,18 @@
     <span class="sec-particle" style="left: 8%; top: 20%; --pf-dur: 16s; --pf-del: -3s" aria-hidden="true">🏗️</span>
     <span class="sec-particle" style="left: 87%; top: 35%; --pf-dur: 13s; --pf-del: -6s" aria-hidden="true">🏠</span>
     <span class="sec-particle" style="left: 50%; top: 78%; --pf-dur: 19s; --pf-del: -9s" aria-hidden="true">🌟</span>
-    <div class="waypoint-wrap" id="wp-contact" style="--wp-color: var(--house-teal)">
-      <div class="waypoint-dot"></div>
-      <div class="waypoint-line"></div>
-      <div class="waypoint-tag">Chapter 11 — Contact</div>
+    <div class="wp2 wp2-contact" id="wp-contact" data-chapter="11" data-label="Get In Touch" data-icon="🏠" data-color="#40B8A0" role="presentation" aria-hidden="true">
+      <div class="wp2-track">
+        <div class="wp2-orb"><div class="wp2-orb-ring"></div><div class="wp2-orb-ring wp2-orb-ring2"></div><span class="wp2-orb-icon">🏠</span></div>
+        <div class="wp2-rail"><div class="wp2-rail-fill"></div><div class="wp2-rail-glow"></div></div>
+        <div class="wp2-badge">
+          <div class="wp2-badge-num">11</div>
+          <div class="wp2-badge-sep"></div>
+          <div class="wp2-badge-label">Get In Touch</div>
+          <div class="wp2-badge-particles"><span></span><span></span><span></span></div>
+        </div>
+        <div class="wp2-tail"><div class="wp2-tail-fill"></div></div>
+      </div>
     </div>
     <div class="s-eye r-left">Get In Touch</div>
     <div class="ct-wrap">
@@ -10531,14 +11431,95 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <a href="#" class="f-logo">Vishan.</a>
-    <span class="f-copy">© 2026 Vishan Rabari — Built with passion in Gujarat, India 🏠</span>
-    <div class="f-links">
-      <a href="https://github.com/Vishandeveloper29" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://www.linkedin.com/in/vishan-rabari-7634ab392" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="mailto:rabarivishan2@gmail.com">Email</a>
+  <!-- FOOTER — RICH VERSION -->
+  <footer class="footer-rich">
+    <!-- Top terrain wave -->
+    <div class="footer-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,40 Q360,0 720,35 Q1080,70 1440,30 L1440,60 L0,60 Z" fill="var(--footer-bg)"/>
+      </svg>
+    </div>
+    <div class="footer-body">
+      <!-- Brand column -->
+      <div class="footer-brand">
+        <a href="#" class="f-logo">Vishan.</a>
+        <p class="footer-tagline">Frontend Developer crafting pixel-perfect, interactive experiences from Gujarat, India.</p>
+        <!-- Social links -->
+        <div class="footer-socials">
+          <a href="https://github.com/Vishandeveloper29" target="_blank" rel="noopener" aria-label="GitHub" class="f-social-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/vishan-rabari-7634ab392" target="_blank" rel="noopener" aria-label="LinkedIn" class="f-social-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://wa.me/918141314836" target="_blank" rel="noopener" aria-label="WhatsApp" class="f-social-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25d366" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+          <a href="mailto:rabarivishan2@gmail.com" aria-label="Email" class="f-social-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navigation column -->
+      <div class="footer-col">
+        <div class="footer-col-title">Navigate</div>
+        <nav class="footer-nav">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#experience">Journey</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Services column -->
+      <div class="footer-col">
+        <div class="footer-col-title">Services</div>
+        <nav class="footer-nav">
+          <a href="#services">Landing Pages</a>
+          <a href="#services">E-Commerce Sites</a>
+          <a href="#services">Portfolio Sites</a>
+          <a href="#services">Web Applications</a>
+          <a href="#services">UI/UX Design</a>
+          <a href="#services">API Integration</a>
+        </nav>
+      </div>
+
+      <!-- Contact column -->
+      <div class="footer-col">
+        <div class="footer-col-title">Get In Touch</div>
+        <div class="footer-contact-list">
+          <a href="mailto:rabarivishan2@gmail.com" class="footer-contact-item">
+            <span class="fci-icon">📧</span>
+            <span>rabarivishan2@gmail.com</span>
+          </a>
+          <a href="https://wa.me/918141314836" target="_blank" class="footer-contact-item">
+            <span class="fci-icon">📱</span>
+            <span>+91 81413 14836</span>
+          </a>
+          <div class="footer-contact-item" style="cursor:default;">
+            <span class="fci-icon">📍</span>
+            <span>Gandhidham, Gujarat 370210</span>
+          </div>
+          <div class="footer-contact-item" style="cursor:default;">
+            <span class="fci-icon" style="color:#6db33f;">🟢</span>
+            <span style="color:#6db33f;">Available for freelance</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <span class="f-copy">© 2026 Vishan Rabari. Built with ❤️ in Gujarat, India.</span>
+      <div class="footer-bottom-links">
+        <a href="Vishan_dev_CV (2).pdf" download>Download CV</a>
+        <span>·</span>
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" style="background:none;border:none;cursor:pointer;color:inherit;font:inherit;">Back to Top ↑</button>
+      </div>
     </div>
   </footer>
 
@@ -11969,7 +12950,7 @@
         setTimeout(() => {
           const success = $('#formSuccess');
           if (success && success.style.display !== 'none') {
-            showToast('Message sent! I'll reply within 24 hours 🎉', '📬', 5000);
+            showToast('Message sent! I\'ll reply within 24 hours 🎉', '📬', 5000);
           }
         }, 1500);
       });
@@ -11998,6 +12979,176 @@
       window.addEventListener(ev, resetIdle, { passive: true })
     );
     resetIdle();
+
+
+    /* ═══════════════════════════════════════════════════════
+       CREATIVE WAYPOINTS v2 — INTERSECTION OBSERVER
+    ═══════════════════════════════════════════════════════ */
+    (function initWaypoints2() {
+      const wps = document.querySelectorAll('.wp2');
+      if (!wps.length) return;
+
+      // Set CSS color variable from data attribute
+      wps.forEach(wp => {
+        const color = wp.dataset.color;
+        if (color) wp.style.setProperty('--wc', color);
+      });
+
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const wp = entry.target;
+          wp.classList.add('wp2-visible');
+
+          // Stagger the orb icon animation restart
+          const icon = wp.querySelector('.wp2-orb-icon');
+          if (icon) {
+            icon.style.animationPlayState = 'running';
+          }
+
+          obs.unobserve(wp);
+        });
+      }, { threshold: 0.25, rootMargin: '0px 0px -60px 0px' });
+
+      wps.forEach(wp => obs.observe(wp));
+
+      // Hover tooltip: show data-label as floating tooltip above orb
+      wps.forEach(wp => {
+        const orb = wp.querySelector('.wp2-orb');
+        if (!orb) return;
+        const tip = document.createElement('div');
+        tip.style.cssText = `
+          position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(6px);
+          background:rgba(0,0,0,.8);color:#fff;
+          font-family:var(--ff-m);font-size:9px;letter-spacing:2px;text-transform:uppercase;
+          padding:5px 12px;border-radius:6px;white-space:nowrap;
+          pointer-events:none;opacity:0;
+          transition:opacity .25s ease,transform .25s cubic-bezier(.34,1.56,.64,1);
+          z-index:100;border:1px solid var(--wc);
+        `;
+        tip.textContent = wp.dataset.label || '';
+        orb.style.position = 'relative';
+        orb.appendChild(tip);
+
+        orb.addEventListener('mouseenter', () => {
+          tip.style.opacity = '1';
+          tip.style.transform = 'translateX(-50%) translateY(0)';
+        });
+        orb.addEventListener('mouseleave', () => {
+          tip.style.opacity = '0';
+          tip.style.transform = 'translateX(-50%) translateY(6px)';
+        });
+
+        // Click orb scrolls to next sibling section content
+        orb.addEventListener('click', () => {
+          const next = wp.nextElementSibling;
+          if (next) {
+            const top = next.getBoundingClientRect().top + window.scrollY - 80;
+            if (typeof lenis !== 'undefined' && lenis) {
+              lenis.scrollTo(top, { duration: 1.1 });
+            } else {
+              window.scrollTo({ top, behavior: 'smooth' });
+            }
+          }
+        });
+      });
+    })();
+
+
+    /* ═══════════════════════════════════════════════════════
+       IMPROVEMENT JS — hero TW, tech pills, nav pill, footer
+    ═══════════════════════════════════════════════════════ */
+
+    /* ── RE-WIRE TYPEWRITER to new element ── */
+    (function rewireTypewriter() {
+      const twEl = document.getElementById('twWord');
+      if (!twEl) return;
+      const words = [
+        'fast websites.', 'clean UIs.', 'pixel-perfect designs.',
+        'smooth animations.', 'mobile-first apps.', 'REST API projects.',
+        'beautiful experiences.', 'e-commerce stores.'
+      ];
+      let wi = 0, ci = 0, deleting = false;
+      function tick() {
+        const word = words[wi];
+        if (!deleting) {
+          twEl.textContent = word.slice(0, ci + 1);
+          ci++;
+          if (ci === word.length) { deleting = true; setTimeout(tick, 1800); return; }
+          setTimeout(tick, 80 + Math.random() * 40);
+        } else {
+          twEl.textContent = word.slice(0, ci - 1);
+          ci--;
+          if (ci === 0) {
+            deleting = false;
+            wi = (wi + 1) % words.length;
+            setTimeout(tick, 400);
+            return;
+          }
+          setTimeout(tick, 45);
+        }
+      }
+      tick();
+    })();
+
+    /* ── TECH PILLS stagger entrance ── */
+    (function animatePills() {
+      const pills = document.querySelectorAll('.htp');
+      pills.forEach((p, i) => {
+        p.style.opacity = '0';
+        p.style.transform = 'translateY(16px) scale(.85)';
+        setTimeout(() => {
+          p.style.transition = 'opacity .5s ease, transform .5s cubic-bezier(.34,1.56,.64,1)';
+          p.style.opacity = '1';
+          p.style.transform = '';
+        }, 1800 + i * 120);
+      });
+    })();
+
+    /* ── FOOTER social buttons per-colour on hover ── */
+    const socialColors = {
+      github: '#333',
+      linkedin: '#0077b5',
+      whatsapp: '#25d366',
+      email: '#f5c842',
+    };
+    document.querySelectorAll('.f-social-btn').forEach((btn, i) => {
+      const colors = ['#333','#0077b5','#25d366','#f5c842'];
+      btn.addEventListener('mouseenter', () => {
+        btn.style.background = colors[i % colors.length];
+        btn.style.borderColor = 'transparent';
+        btn.style.color = '#fff';
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.background = '';
+        btn.style.borderColor = '';
+        btn.style.color = '';
+      });
+    });
+
+    /* ── FOOTER nav links — smooth scroll ── */
+    document.querySelectorAll('.footer-nav a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.getElementById(a.getAttribute('href').slice(1));
+        if (!t) return;
+        e.preventDefault();
+        const top = t.getBoundingClientRect().top + window.scrollY - 72;
+        if (typeof lenis !== 'undefined' && lenis) lenis.scrollTo(top, { duration: 1.2 });
+        else window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+
+    /* ── NAV active pill style — update on scroll ── */
+    // Already handled by existing scroll handler,
+    // but ensure the new .active class produces pill visuals
+
+    /* ── TECH PILL hover micro-bounce on touch ── */
+    document.querySelectorAll('.htp').forEach(p => {
+      p.addEventListener('click', () => {
+        p.style.transform = 'scale(.9)';
+        setTimeout(() => p.style.transform = '', 150);
+      });
+    });
 
     console.log('🚀 Vishan Portfolio — World-Class + Feature-Full Edition loaded!');
     console.log('💡 Keyboard shortcuts: press ? to see all');
