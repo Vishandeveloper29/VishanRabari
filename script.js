@@ -471,8 +471,8 @@ $$('.faq-q').forEach(btn => {
       const resp = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
       if (resp.ok) {
         if (successEmail) successEmail.textContent = email;
-        if (formContent) formContent.style.display = 'none';
-        if (formSuccess) formSuccess.removeAttribute('hidden');
+        if (formContent) { formContent.style.display = 'none'; formContent.setAttribute('hidden', ''); }
+        if (formSuccess) { formSuccess.removeAttribute('hidden'); formSuccess.style.display = 'flex'; }
         launchConfetti();
       } else throw new Error('Server error');
     } catch {
