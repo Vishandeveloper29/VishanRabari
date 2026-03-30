@@ -16,6 +16,7 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 img,
@@ -114,6 +115,18 @@ body {
 ::-webkit-scrollbar-thumb {
   background: var(--lime);
   border-radius: 2px;
+}
+
+/* Hide scrollbar on mobile — use the custom scroll-bar indicator instead */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 0;
+    display: none;
+  }
+  html, body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
 }
 
 ::selection {
@@ -8160,5 +8173,391 @@ svg {
   }
   .success-msg {
     font-size: 13px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   HERO REDESIGN — Creative Version
+   Photo card + diagonal name + social links
+══════════════════════════════════════════════════════ */
+
+/* Big diagonal background text */
+.hero-bg-name {
+  position: absolute;
+  font-family: var(--ff-d);
+  font-size: clamp(120px, 25vw, 320px);
+  letter-spacing: 10px;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(200, 255, 0, 0.04);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -48%) rotate(-12deg);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+  user-select: none;
+  line-height: 1;
+}
+
+[data-theme="light"] .hero-bg-name {
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.04);
+}
+
+/* Hero canvas (interactive lines) */
+#heroCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Social links row */
+.hero-socials {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.5vw, 14px);
+  margin-top: clamp(20px, 3vw, 36px);
+  opacity: 0;
+  animation: revealUp 0.7s 1.2s forwards;
+  flex-wrap: wrap;
+}
+
+.hs-link {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg3);
+  transition: var(--trans);
+  flex-shrink: 0;
+}
+
+.hs-link svg {
+  width: 15px;
+  height: 15px;
+}
+
+.hs-link:hover {
+  border-color: var(--lime);
+  color: var(--lime);
+  background: rgba(200, 255, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.hs-sep {
+  display: block;
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
+.hs-avail {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--ff-m);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--lime);
+  background: rgba(200, 255, 0, 0.07);
+  border: 1px solid rgba(200, 255, 0, 0.2);
+  padding: 5px 12px;
+  border-radius: 100px;
+}
+
+/* ── HERO RIGHT SIDE ── */
+.hero-right {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: clamp(12px, 2vw, 20px);
+}
+
+/* Profile photo card */
+.hero-photo-card {
+  width: 100%;
+  max-width: 320px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px var(--shadow);
+  position: relative;
+  transition:
+    transform 0.4s,
+    box-shadow 0.4s;
+  z-index: 3;
+}
+
+@media (hover: hover) {
+  .hero-photo-card:hover {
+    transform: translateY(-6px) rotateY(-3deg);
+    box-shadow:
+      0 60px 120px var(--shadow),
+      0 0 60px rgba(200, 255, 0, 0.06);
+  }
+}
+
+.hpc-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--lime), var(--cyan), var(--rose));
+  z-index: 2;
+}
+
+.hpc-header {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+[data-theme="light"] .hpc-header {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.hpc-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.hpc-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: block;
+}
+
+.hpc-label {
+  margin-left: 10px;
+  font-family: var(--ff-m);
+  font-size: 10px;
+  color: var(--fg3);
+  letter-spacing: 1px;
+  flex: 1;
+}
+
+.hpc-online {
+  font-family: var(--ff-m);
+  font-size: 9px;
+  color: var(--lime);
+  letter-spacing: 2px;
+  animation: pulse-text 2s infinite;
+}
+
+/* Photo container */
+.hpc-photo-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0d1f0d, #1a3a1a);
+}
+
+.hpc-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-photo-card:hover .hpc-photo {
+  transform: scale(1.04);
+}
+
+.hpc-photo-fallback {
+  display: none;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-d);
+  font-size: 64px;
+  color: var(--lime);
+  letter-spacing: 4px;
+}
+
+/* Overlay on photo hover */
+.hpc-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5, 5, 10, 0.8) 0%, transparent 50%);
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.hero-photo-card:hover .hpc-photo-overlay {
+  opacity: 1;
+}
+
+.hpc-skill-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.hpc-tag {
+  font-family: var(--ff-m);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  background: rgba(200, 255, 0, 0.15);
+  border: 1px solid rgba(200, 255, 0, 0.3);
+  color: var(--lime);
+  border-radius: 4px;
+}
+
+/* Card body */
+.hpc-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hpc-name {
+  font-family: var(--ff-d);
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--fg);
+}
+
+.hpc-role {
+  font-family: var(--ff-m);
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 4px;
+}
+
+/* Skill bars */
+.hpc-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hpc-bar-label {
+  font-family: var(--ff-m);
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--fg3);
+  min-width: 28px;
+}
+
+.hpc-bar-track {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.hpc-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--lime), var(--cyan));
+  border-radius: 2px;
+  transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hpc-bar-pct {
+  font-family: var(--ff-m);
+  font-size: 9px;
+  color: var(--fg3);
+  min-width: 44px;
+  text-align: right;
+}
+
+/* Code card — positioned under photo card, slightly offset */
+.hero-code-mini {
+  max-width: 280px;
+  margin-right: 20px;
+  margin-top: -10px;
+  position: relative;
+  z-index: 2;
+  transform: rotate(1.5deg);
+  transition: transform 0.4s;
+}
+
+.hero-code-mini:hover {
+  transform: rotate(0deg) translateY(-4px) !important;
+}
+
+/* Floating badges — reposition for new layout */
+.fb1 {
+  top: -22px;
+  left: -28px;
+}
+.fb2 {
+  top: 40px;
+  right: -20px;
+}
+.fb3 {
+  bottom: 80px;
+  left: -28px;
+}
+
+@media (max-width: 600px) {
+  .fb1,
+  .fb2,
+  .fb3 {
+    display: none !important;
+  }
+}
+
+/* Hero inner — adjust for new right panel */
+@media (min-width: 1024px) {
+  .hero-right {
+    width: clamp(300px, 38vw, 480px);
+    flex-shrink: 0;
+    margin-top: 0;
+    padding-left: clamp(20px, 4vw, 60px);
+    align-items: flex-start;
+  }
+  .hero-photo-card {
+    max-width: 360px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero-right {
+    width: 100%;
+    max-width: 380px;
+    margin-top: clamp(32px, 5vw, 56px);
+    align-items: flex-start;
+  }
+  .hero-code-mini {
+    max-width: 260px;
+  }
+}
+
+@media (max-width: 479px) {
+  .hero-bg-name {
+    font-size: 80px;
+    letter-spacing: 6px;
+  }
+  .hero-socials {
+    gap: 8px;
+  }
+  .hero-code-mini {
+    display: none;
   }
 }
