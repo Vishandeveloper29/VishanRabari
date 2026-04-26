@@ -106,7 +106,7 @@
     particles.forEach(p => {
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(200,255,0,${p.alpha})`;
+      ctx.fillStyle = `rgba(255,106,0,${p.alpha})`;
       ctx.fill();
       p.x += p.vx;
       p.y += p.vy;
@@ -127,7 +127,7 @@
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(200,255,0,${0.06 * (1 - dist / 100)})`;
+            ctx.strokeStyle = `rgba(255,106,0,${0.04 * (1 - dist / 100)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -586,12 +586,12 @@
       { name: 'JavaScript', icon: 'JS', color: '#f0db4f', level: 82, cat: 'Core' },
       { name: 'Figma', icon: '▣', color: '#a259ff', level: 78, cat: 'Design' },
       { name: 'Git', icon: '⑂', color: '#f1502f', level: 75, cat: 'Tools' },
-      { name: 'Responsive', icon: '⊞', color: '#ffb347', level: 90, cat: 'Design' },
-      { name: 'REST APIs', icon: '⇄', color: '#ff6b00', level: 72, cat: 'Tools' },
+      { name: 'Responsive', icon: '⊞', color: '#00e5ff', level: 90, cat: 'Design' },
+      { name: 'REST APIs', icon: '⇄', color: '#ff6a00', level: 72, cat: 'Tools' },
       { name: 'C Lang', icon: 'C', color: '#a8b9cc', level: 65, cat: 'Lang' },
-      { name: 'GSAP', icon: '▶', color: '#ff8c42', level: 68, cat: 'Tools' },
-      { name: 'React', icon: '⚛', color: '#ffd166', level: 40, cat: 'Learning' },
-      { name: 'Node.js', icon: '⬡', color: '#ff9f1c', level: 35, cat: 'Learning' },
+      { name: 'GSAP', icon: '▶', color: '#88ce02', level: 68, cat: 'Tools' },
+      { name: 'React', icon: '⚛', color: '#61dafb', level: 40, cat: 'Learning' },
+      { name: 'Node.js', icon: '⬡', color: '#8cc84b', level: 35, cat: 'Learning' },
       { name: 'SEO', icon: '◎', color: '#ffd166', level: 70, cat: 'Tools' }
     ];
 
@@ -649,7 +649,7 @@
       ctx.clearRect(0, 0, W, H);
 
       // Globe wireframe
-      ctx.strokeStyle = 'rgba(200,255,0,0.04)';
+      ctx.strokeStyle = 'rgba(255,106,0,0.06)';
       ctx.lineWidth = 0.5;
       for (let i = 0; i < 8; i++) {
         const a = (i / 8) * Math.PI;
@@ -785,10 +785,10 @@
     const SKILLS = [
       { name: 'HTML', color: '#e34c26', r: 32 }, { name: 'CSS', color: '#264de4', r: 30 },
       { name: 'JS', color: '#f0db4f', r: 36 }, { name: 'Figma', color: '#a259ff', r: 26 },
-      { name: 'Git', color: '#f1502f', r: 24 }, { name: 'REST', color: '#ff6b00', r: 22 },
-      { name: 'GSAP', color: '#ff8c42', r: 20 }, { name: 'React', color: '#ffd166', r: 24 },
-      { name: 'CSS Grid', color: '#ffb347', r: 20 }, { name: 'SEO', color: '#ffd166', r: 18 },
-      { name: 'C Lang', color: '#a8b9cc', r: 18 }, { name: 'Node', color: '#ff9f1c', r: 20 }
+      { name: 'Git', color: '#f1502f', r: 24 }, { name: 'REST', color: '#ff6a00', r: 22 },
+      { name: 'GSAP', color: '#88ce02', r: 20 }, { name: 'React', color: '#61dafb', r: 24 },
+      { name: 'CSS Grid', color: '#00e5ff', r: 20 }, { name: 'SEO', color: '#ffd166', r: 18 },
+      { name: 'C Lang', color: '#a8b9cc', r: 18 }, { name: 'Node', color: '#8cc84b', r: 20 }
     ];
 
     let balls = [];
@@ -1165,14 +1165,14 @@
 
     // Lights
     scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-    const keyLight = new THREE.DirectionalLight(0xff6b00, 0.9);
+    const keyLight = new THREE.DirectionalLight(0xc8ff00, 0.9);
     keyLight.position.set(3, 5, 4);
     keyLight.castShadow = true;
     scene.add(keyLight);
-    const fillLight = new THREE.DirectionalLight(0xffb347, 0.4);
+    const fillLight = new THREE.DirectionalLight(0x00e5ff, 0.4);
     fillLight.position.set(-3, 3, 2);
     scene.add(fillLight);
-    const rimLight = new THREE.DirectionalLight(0xe63946, 0.3);
+    const rimLight = new THREE.DirectionalLight(0xff2d55, 0.3);
     rimLight.position.set(0, 1, -3);
     scene.add(rimLight);
 
@@ -1196,12 +1196,12 @@
     const matPants = new THREE.MeshStandardMaterial({ color: 0x0f0f1f, roughness: 0.8, metalness: 0.0 });
     const matDesk = new THREE.MeshStandardMaterial({ color: 0x2a1a0a, roughness: 0.4, metalness: 0.15 });
     const matScreen = new THREE.MeshStandardMaterial({ color: 0x05050a, roughness: 0.1, metalness: 0.5 });
-    const matGlowScreen = new THREE.MeshStandardMaterial({ color: 0xff6b00, roughness: 0.0, metalness: 0.0, emissive: 0xff6b00, emissiveIntensity: 0.6 });
+    const matGlowScreen = new THREE.MeshStandardMaterial({ color: 0xc8ff00, roughness: 0.0, metalness: 0.0, emissive: 0xc8ff00, emissiveIntensity: 0.6 });
     const matChair = new THREE.MeshStandardMaterial({ color: 0x111118, roughness: 0.7, metalness: 0.3 });
     const matMetal = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.2, metalness: 0.9 });
     const matHair = new THREE.MeshStandardMaterial({ color: 0x1a0a00, roughness: 0.8 });
     const matGlass = new THREE.MeshStandardMaterial({ color: 0xaaddff, roughness: 0.05, metalness: 0.0, transparent: true, opacity: 0.35 });
-    const matMug = new THREE.MeshStandardMaterial({ color: 0xff6b00, roughness: 0.5, metalness: 0.1 });
+    const matMug = new THREE.MeshStandardMaterial({ color: 0xc8ff00, roughness: 0.5, metalness: 0.1 });
 
     const root = new THREE.Group();
     scene.add(root);
@@ -1239,7 +1239,7 @@
     monBody.position.set(0, 0.8, 0);
     monBody.castShadow = true;
     monitor.add(monBody);
-    // Screen glow (orange warm feel)
+    // Screen glow (lime code editor feel)
     const screenGeo = new THREE.PlaneGeometry(1.54, 0.86);
     const screen = new THREE.Mesh(screenGeo, matGlowScreen);
     screen.position.set(0, 0.8, 0.042);
@@ -1374,7 +1374,7 @@
     });
 
     // Glasses
-    const glassMat = new THREE.MeshStandardMaterial({ color: 0xff6b00, roughness: 0.2, metalness: 0.8 });
+    const glassMat = new THREE.MeshStandardMaterial({ color: 0xc8ff00, roughness: 0.2, metalness: 0.8 });
     [-0.1, 0.1].forEach(x => {
       const frame = new THREE.Mesh(new THREE.TorusGeometry(0.065, 0.012, 6, 16), glassMat);
       frame.position.set(x, 0.96, 0.175);
@@ -1462,7 +1462,7 @@
       pPos[i * 3 + 2] = -0.6 + Math.random() * 0.2;
     }
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    const pMesh = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xff6b00, size: 0.025, transparent: true, opacity: 0.7 }));
+    const pMesh = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xc8ff00, size: 0.025, transparent: true, opacity: 0.7 }));
     desk.add(pMesh);
 
     /* ── FLOOR SHADOW PLANE ── */
